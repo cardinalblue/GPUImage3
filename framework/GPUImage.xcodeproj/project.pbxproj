@@ -409,6 +409,10 @@
 		BCFCD46720FCE91200560BC9 /* DissolveBlend.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */; };
 		BCFCD46820FCE91200560BC9 /* DissolveBlend.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */; };
 		BCFCD46920FCE91800560BC9 /* DissolveBlend.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46420FCE83500560BC9 /* DissolveBlend.swift */; };
+		FB10DA6F2AF8F688000B1AEF /* Grain.metal in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6D2AF8F688000B1AEF /* Grain.metal */; };
+		FB10DA702AF8F688000B1AEF /* Grain.metal in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6D2AF8F688000B1AEF /* Grain.metal */; };
+		FB10DA712AF8F688000B1AEF /* Grain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6E2AF8F688000B1AEF /* Grain.swift */; };
+		FB10DA722AF8F688000B1AEF /* Grain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6E2AF8F688000B1AEF /* Grain.swift */; };
 		FBE32DE42760CA9400DDDE68 /* UnsharpMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE32DE22760CA9400DDDE68 /* UnsharpMask.swift */; };
 		FBE32DE52760CA9400DDDE68 /* UnsharpMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE32DE22760CA9400DDDE68 /* UnsharpMask.swift */; };
 		FBE32DE62760CA9400DDDE68 /* UnsharpMask.metal in Sources */ = {isa = PBXBuildFile; fileRef = FBE32DE32760CA9400DDDE68 /* UnsharpMask.metal */; };
@@ -623,6 +627,8 @@
 		BCE0BE9D20D6E3C80006E120 /* ImageOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageOrientation.swift; path = Source/ImageOrientation.swift; sourceTree = "<group>"; };
 		BCFCD46420FCE83500560BC9 /* DissolveBlend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DissolveBlend.swift; path = Source/Operations/DissolveBlend.swift; sourceTree = "<group>"; };
 		BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; name = DissolveBlend.metal; path = Source/Operations/DissolveBlend.metal; sourceTree = "<group>"; };
+		FB10DA6D2AF8F688000B1AEF /* Grain.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Grain.metal; path = Source/Operations/Grain.metal; sourceTree = "<group>"; };
+		FB10DA6E2AF8F688000B1AEF /* Grain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Grain.swift; path = Source/Operations/Grain.swift; sourceTree = "<group>"; };
 		FBE32DE22760CA9400DDDE68 /* UnsharpMask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnsharpMask.swift; path = Source/Operations/UnsharpMask.swift; sourceTree = "<group>"; };
 		FBE32DE32760CA9400DDDE68 /* UnsharpMask.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = UnsharpMask.metal; path = Source/Operations/UnsharpMask.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -701,6 +707,8 @@
 				79DD50CC213454A2004EF308 /* Vignette.metal */,
 				795ECA7921E90944000EF927 /* ZoomBlur.swift */,
 				795ECA7C21E9095A000EF927 /* ZoomBlur.metal */,
+				FB10DA6E2AF8F688000B1AEF /* Grain.swift */,
+				FB10DA6D2AF8F688000B1AEF /* Grain.metal */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -1134,6 +1142,7 @@
 				79CB6E0B21092E3E0042F87B /* LuminosityBlend.metal in Sources */,
 				79CB6DEA210926220042F87B /* ExclusionBlend.swift in Sources */,
 				79CB6E0221092D710042F87B /* LinearBurnBlend.swift in Sources */,
+				FB10DA712AF8F688000B1AEF /* Grain.swift in Sources */,
 				79CB6DCF2108B1BC0042F87B /* ColorBurnBlend.metal in Sources */,
 				7B25C0E32103D328000EC621 /* AlphaBlend.swift in Sources */,
 				795ECAB421EF8ECA000EF927 /* ChromaKey.swift in Sources */,
@@ -1141,6 +1150,7 @@
 				79A81CA021010A2200A3B43A /* Vibrance.swift in Sources */,
 				4C280F76213426D6001A985C /* Posterize.swift in Sources */,
 				79CB6E112109311C0042F87B /* MultiplyBlend.metal in Sources */,
+				FB10DA6F2AF8F688000B1AEF /* Grain.metal in Sources */,
 				BC7BA28420F59C8E006B5F4B /* MonochromeFilter.metal in Sources */,
 				FBE32DE42760CA9400DDDE68 /* UnsharpMask.swift in Sources */,
 				79CB6E20210A07F30042F87B /* SaturationBlend.swift in Sources */,
@@ -1341,6 +1351,7 @@
 				79CB6E0C21092E3E0042F87B /* LuminosityBlend.metal in Sources */,
 				79CB6DEB210926220042F87B /* ExclusionBlend.swift in Sources */,
 				79CB6E0321092D710042F87B /* LinearBurnBlend.swift in Sources */,
+				FB10DA722AF8F688000B1AEF /* Grain.swift in Sources */,
 				79CB6DD02108B1BC0042F87B /* ColorBurnBlend.metal in Sources */,
 				7B25C0E42103D328000EC621 /* AlphaBlend.swift in Sources */,
 				795ECAB521EF8ECA000EF927 /* ChromaKey.swift in Sources */,
@@ -1348,6 +1359,7 @@
 				79A81CA121010A2200A3B43A /* Vibrance.swift in Sources */,
 				4C280F77213426D6001A985C /* Posterize.swift in Sources */,
 				79CB6E122109311C0042F87B /* MultiplyBlend.metal in Sources */,
+				FB10DA702AF8F688000B1AEF /* Grain.metal in Sources */,
 				BCE0BE9F20D6E3C80006E120 /* Color.swift in Sources */,
 				FBE32DE52760CA9400DDDE68 /* UnsharpMask.swift in Sources */,
 				79CB6E21210A07F30042F87B /* SaturationBlend.swift in Sources */,
