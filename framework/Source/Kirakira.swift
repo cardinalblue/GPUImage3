@@ -172,25 +172,27 @@ public class Kirakira: OperationGroup {
         self.sparklesEffect = Sparkles(rayCount: parameters.rayCount)
         super.init()
 
-        colorMode = parameters.colorMode
-        saturation = parameters.saturation
-        centerSaturation = parameters.centerSaturation
-        equalMinHue = parameters.equalMinHue
-        equalMaxHue = parameters.equalMaxHue
-        equalSaturation = parameters.equalSaturation
-        equalBrightness = parameters.equalBrightness
-        speed = parameters.speed
-        rayLength = parameters.rayLength
-        startAngle = parameters.startAngle
-        sparkleExposure = parameters.sparkleExposure
-        minHue = parameters.minHue
-        maxHue = parameters.maxHue
-        noiseInfluence = parameters.noiseInfluence
-        increasingRate = parameters.increasingRate
-        sparkleScale = parameters.sparkleScale
-        sparkleAmount = parameters.sparkleAmount
-        frameRate = parameters.frameRate
-        blur = parameters.blur
+        ({
+            colorMode = parameters.colorMode
+            saturation = parameters.saturation
+            centerSaturation = parameters.centerSaturation
+            equalMinHue = parameters.equalMinHue
+            equalMaxHue = parameters.equalMaxHue
+            equalSaturation = parameters.equalSaturation
+            equalBrightness = parameters.equalBrightness
+            speed = parameters.speed
+            rayLength = parameters.rayLength
+            startAngle = parameters.startAngle
+            sparkleExposure = parameters.sparkleExposure
+            minHue = parameters.minHue
+            maxHue = parameters.maxHue
+            noiseInfluence = parameters.noiseInfluence
+            increasingRate = parameters.increasingRate
+            sparkleScale = parameters.sparkleScale
+            sparkleAmount = parameters.sparkleAmount
+            frameRate = parameters.frameRate
+            blur = parameters.blur
+        })()
 
         self.configureGroup { input, output in
             input
