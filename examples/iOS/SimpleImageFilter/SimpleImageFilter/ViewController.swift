@@ -39,28 +39,12 @@ class ViewController: UIViewController {
             "Kirakira_Glamour"
         ]
         let parameters = { () -> Kirakira.Parameters in
-//            let jsonFileName = jsonFileName[2] + ".json"
-//            let jsonData = try! Data(contentsOf: Bundle.main.url(forResource: jsonFileName, withExtension: nil)!)
-//            let parameters = try! Kirakira.Parameters(with: jsonData)
-//            return parameters
-            return Kirakira.Parameters(
-                colorMode: .random,
-                saturation: 0.5,
-                centerSaturation: 0.3,
-                equalMinHue: 0.54,
-                equalMaxHue: 0,
-                equalSaturation: 0.15,
-                equalBrightness: 2.8,
-                rayLength: 0.5,
-                sparkleExposure: 0.1,
-                minHue: 0,
-                maxHue: 1,
-                noiseInfluence: 1,
-                increasingRate: 0.03,
-                sparkleAmount: 0.6,
-                blur: 0
-            )
+            let jsonFileName = jsonFileName[1] + ".json"
+            let jsonData = try! Data(contentsOf: Bundle.main.url(forResource: jsonFileName, withExtension: nil)!)
+            let parameters = try! Kirakira.Parameters(with: jsonData)
+            return parameters
         }()
+
         let filter = Kirakira(with: parameters)
 
         picture = PictureInput(image: UIImage(named:"WID-small.jpg")!)
