@@ -10,9 +10,87 @@ import Foundation
 
 public class Kirakira: OperationGroup {
 
-    public enum ColorMode: Int {
+    public enum ColorMode: Int, Codable {
         case white = 0
         case random = 1
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let rawValue = try container.decode(Int.self)
+            self = ColorMode(rawValue: rawValue) ?? .random
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(rawValue)
+        }
+    }
+
+    public struct Parameters: Codable {
+        public var colorMode: ColorMode
+        public var saturation: Float
+        public var centerSaturation: Float
+        public var equalMinHue: Float
+        public var equalMaxHue: Float
+        public var equalSaturation: Float
+        public var equalBrightness: Float
+        public var speed: Float
+        public var rayCount: Int
+        public var rayLength: Float
+        public var startAngle: Int
+        public var sparkleExposure: Float
+        public var minHue: Float
+        public var maxHue: Float
+        public var noiseInfluence: Float
+        public var increasingRate: Float
+        public var sparkleScale: Float
+        public var sparkleAmount: Float
+        public var frameRate: Float
+        public var blur: Int
+
+        public init(
+            colorMode: ColorMode = .random,
+            saturation: Float = 0.3,
+            centerSaturation: Float = 0.3,
+            equalMinHue: Float = 0.75,
+            equalMaxHue: Float = 0.083,
+            equalSaturation: Float = 0.15,
+            equalBrightness: Float = 2.0,
+            speed: Float = 7.5,
+            rayCount: Int = 2,
+            rayLength: Float = 0.08,
+            startAngle: Int = 45,
+            sparkleExposure: Float = 0.0,
+            minHue: Float = 0.0,
+            maxHue: Float = 1.0,
+            noiseInfluence: Float = 1.0,
+            increasingRate: Float = 0.3,
+            sparkleScale: Float = 0.7,
+            sparkleAmount: Float = 0.4,
+            frameRate: Float = 60,
+            blur: Int = 0
+        ) {
+            self.colorMode = colorMode
+            self.saturation = saturation
+            self.centerSaturation = centerSaturation
+            self.equalMinHue = equalMinHue
+            self.equalMaxHue = equalMaxHue
+            self.equalSaturation = equalSaturation
+            self.equalBrightness = equalBrightness
+            self.speed = speed
+            self.rayCount = rayCount
+            self.rayLength = rayLength
+            self.startAngle = startAngle
+            self.sparkleExposure = sparkleExposure
+            self.minHue = minHue
+            self.maxHue = maxHue
+            self.noiseInfluence = noiseInfluence
+            self.increasingRate = increasingRate
+            self.sparkleScale = sparkleScale
+            self.sparkleAmount = sparkleAmount
+            self.frameRate = frameRate
+            self.blur = blur
+        }
     }
 
     // MARK: Properties
@@ -89,30 +167,30 @@ public class Kirakira: OperationGroup {
     private let saturationEffect = SaturationAdjustment()
     private let addBlend = AddBlend()
 
-    public init(rayCount: Int = 2) {
-        self.rayCount = rayCount
-        self.sparklesEffect = Sparkles(rayCount: rayCount)
+    public init(with parameters: Parameters) {
+        self.rayCount = parameters.rayCount
+        self.sparklesEffect = Sparkles(rayCount: parameters.rayCount)
         super.init()
 
-        ({equalMinHue = 0.75})()
-        ({equalMaxHue = 0.083})()
-        ({equalSaturation = 0.15})()
-        ({equalBrightness = 2.0})()
-        ({speed = 7.5})()
-        ({rayLength = 0.08})()
-        ({sparkleExposure = 0.0})()
-        ({blur = 0})()
-        ({colorMode = .random})()
-        ({saturation = 0.3})()
-        ({minHue = 0.0})()
-        ({maxHue = 1.0})()
-        ({noiseInfluence = 1.0})()
-        ({increasingRate = 0.3})()
-        ({startAngle = 45})()
-        ({sparkleScale = 0.7})()
-        ({sparkleAmount = 0.4})()
-        ({frameRate = 60})()
-        ({centerSaturation = 0.3})()
+        colorMode = parameters.colorMode
+        saturation = parameters.saturation
+        centerSaturation = parameters.centerSaturation
+        equalMinHue = parameters.equalMinHue
+        equalMaxHue = parameters.equalMaxHue
+        equalSaturation = parameters.equalSaturation
+        equalBrightness = parameters.equalBrightness
+        speed = parameters.speed
+        rayLength = parameters.rayLength
+        startAngle = parameters.startAngle
+        sparkleExposure = parameters.sparkleExposure
+        minHue = parameters.minHue
+        maxHue = parameters.maxHue
+        noiseInfluence = parameters.noiseInfluence
+        increasingRate = parameters.increasingRate
+        sparkleScale = parameters.sparkleScale
+        sparkleAmount = parameters.sparkleAmount
+        frameRate = parameters.frameRate
+        blur = parameters.blur
 
         self.configureGroup { input, output in
             input
