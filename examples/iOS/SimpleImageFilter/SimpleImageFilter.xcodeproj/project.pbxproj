@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		934426FB2BDF6B3B00BF9145 /* Kirakira_Diamond.json in Resources */ = {isa = PBXBuildFile; fileRef = 934426FA2BDF6B3B00BF9145 /* Kirakira_Diamond.json */; };
+		934427032BDF715600BF9145 /* Kirakira_Rainbow.json in Resources */ = {isa = PBXBuildFile; fileRef = 934426FE2BDF715600BF9145 /* Kirakira_Rainbow.json */; };
+		934427042BDF715600BF9145 /* Kirakira_Flashlight.json in Resources */ = {isa = PBXBuildFile; fileRef = 934426FF2BDF715600BF9145 /* Kirakira_Flashlight.json */; };
+		934427052BDF715600BF9145 /* Kirakira_Barbie.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427002BDF715600BF9145 /* Kirakira_Barbie.json */; };
+		934427062BDF715600BF9145 /* Kirakira_Golden.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427012BDF715600BF9145 /* Kirakira_Golden.json */; };
+		934427072BDF715600BF9145 /* Kirakira_Glamour.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427022BDF715600BF9145 /* Kirakira_Glamour.json */; };
 		BC9E36691E525B6C00B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E36641E525B5B00B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCD985B01CA43FD5001FF01F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */; };
 		BCD985B21CA43FD5001FF01F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985B11CA43FD5001FF01F /* ViewController.swift */; };
@@ -58,6 +64,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		934426FA2BDF6B3B00BF9145 /* Kirakira_Diamond.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Kirakira_Diamond.json; sourceTree = "<group>"; };
+		934426FE2BDF715600BF9145 /* Kirakira_Rainbow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Rainbow.json; sourceTree = "<group>"; };
+		934426FF2BDF715600BF9145 /* Kirakira_Flashlight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Flashlight.json; sourceTree = "<group>"; };
+		934427002BDF715600BF9145 /* Kirakira_Barbie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Barbie.json; sourceTree = "<group>"; };
+		934427012BDF715600BF9145 /* Kirakira_Golden.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Golden.json; sourceTree = "<group>"; };
+		934427022BDF715600BF9145 /* Kirakira_Glamour.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Glamour.json; sourceTree = "<group>"; };
 		BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleImageFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +96,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		934426FD2BDF6B8A00BF9145 /* KiraKiraParameters */ = {
+			isa = PBXGroup;
+			children = (
+				934427002BDF715600BF9145 /* Kirakira_Barbie.json */,
+				934426FF2BDF715600BF9145 /* Kirakira_Flashlight.json */,
+				934427022BDF715600BF9145 /* Kirakira_Glamour.json */,
+				934427012BDF715600BF9145 /* Kirakira_Golden.json */,
+				934426FE2BDF715600BF9145 /* Kirakira_Rainbow.json */,
+				934426FA2BDF6B3B00BF9145 /* Kirakira_Diamond.json */,
+			);
+			name = KiraKiraParameters;
+			sourceTree = "<group>";
+		};
 		BC9E36591E525B5A00B8604F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */,
+				934426FD2BDF6B8A00BF9145 /* KiraKiraParameters */,
 				FB10DA342AF279C6000B1AEF /* overlay-3.png */,
 				FB3640E52AF0FF1900B5DA1C /* overlay-1.jpg */,
 				FB10DA312AF26388000B1AEF /* overlay-2.png */,
@@ -235,11 +261,17 @@
 				BCD985BA1CA43FD5001FF01F /* LaunchScreen.storyboard in Resources */,
 				FB3640E72AF0FF1900B5DA1C /* overlay-1.jpg in Resources */,
 				FB10DA352AF279C6000B1AEF /* overlay-3.png in Resources */,
+				934427062BDF715600BF9145 /* Kirakira_Golden.json in Resources */,
 				BCD985D51CA48F15001FF01F /* WID-small.jpg in Resources */,
 				FB3640EB2AF101AE00B5DA1C /* t2.png in Resources */,
 				BCFB058C1CBF17FD009B2333 /* Assets-iOS.xcassets in Resources */,
+				934427052BDF715600BF9145 /* Kirakira_Barbie.json in Resources */,
+				934427032BDF715600BF9145 /* Kirakira_Rainbow.json in Resources */,
+				934427042BDF715600BF9145 /* Kirakira_Flashlight.json in Resources */,
 				BCD985B51CA43FD5001FF01F /* Main.storyboard in Resources */,
+				934426FB2BDF6B3B00BF9145 /* Kirakira_Diamond.json in Resources */,
 				FB10DA332AF26388000B1AEF /* overlay-2.png in Resources */,
+				934427072BDF715600BF9145 /* Kirakira_Glamour.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

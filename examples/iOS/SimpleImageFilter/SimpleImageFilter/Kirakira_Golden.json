@@ -1,0 +1,78 @@
+{
+    "equalMinHue" : {
+        "type" : "float",
+        "value" : 0.0
+    },
+    "equalMaxHue" : {
+        "type" : "float",
+        "value" : 0.06
+    },
+    "equalSaturation" : {
+        "type" : "float",
+        "value" : 0.5
+    },
+    "equalBrightness" : {
+        "type" : "float",
+        "value" : 3.9
+    },
+    "speed" : {
+        "type" : "float",
+        "value" : 7.5
+    },
+    "rayCount" : {
+        "type" : "int",
+        "value" : 3
+    },
+    "rayLength" : {
+        "type" : "float",
+        "value" : 0.1
+    },
+    "sparkleExposure" : {
+        "value" : -1.0,
+        "type" : "float"
+    },
+    "blur" : {
+        "value" : 0,
+        "type" : "int"
+    },
+    "colorMode" : {
+        "value" : 1,
+        "type" : "int"
+    },
+    "saturation" : {
+        "type" : "float",
+        "value" : 1.0
+    },
+    "centerSaturation" : {
+        "type" : "float",
+        "value" : 1.0
+    },
+    "minHue" : {
+        "value" : 0.04,
+        "type" : "float"
+    },
+    "maxHue" : {
+        "value" : 0.16,
+        "type" : "float"
+    },
+    "noiseInfluence" : {
+        "type" : "float",
+        "value" : 1
+    },
+    "increasingRate" : {
+        "value" : 0.2,
+        "type" : "float"
+    },
+    "startAngle" : {
+        "type" : "int",
+        "value" : 45
+    },
+    "sparkleAmount" : {
+        "type" : "float",
+        "value" : 0.3
+    },
+    "frameRate" : {
+        "type" : "int",
+        "value" : 60
+    }
+}
