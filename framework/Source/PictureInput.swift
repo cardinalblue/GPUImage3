@@ -67,7 +67,8 @@ public class PictureInput: ImageSource {
                     fatalError("Failed loading image texture")
                 }
             } else {
-                textureLoader.newTexture(cgImage: internalImage!, options: [MTKTextureLoader.Option.SRGB : false], completionHandler: { (possibleTexture, error) in
+                textureLoader.newTexture(cgImage: internalImage!, options: [MTKTextureLoader.Option.SRGB : false], completionHandler: { [weak self] (possibleTexture, error) in
+                    guard let self else { return }
                     guard (error == nil) else { fatalError("Error in loading texture: \(error!)") }
                     guard let texture = possibleTexture else { fatalError("Nil texture received") }
                     self.internalImage = nil
