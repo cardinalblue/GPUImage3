@@ -11,13 +11,16 @@ public class PictureInput: ImageSource {
     var hasProcessedImage:Bool = false
     var internalImage:CGImage?
 
-    public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
+    let isTransient: Bool
+
+    public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait, isTransient: Bool = false) {
         internalImage = image
+        self.isTransient = isTransient
     }
     
     #if canImport(UIKit)
-    public convenience init(image:UIImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
-        self.init(image: image.cgImage!, smoothlyScaleOutput: smoothlyScaleOutput, orientation: orientation)
+    public convenience init(image:UIImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait, isTransient: Bool = false) {
+        self.init(image: image.cgImage!, smoothlyScaleOutput: smoothlyScaleOutput, orientation: orientation, isTransient: isTransient)
     }
     
     public convenience init(imageName:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
@@ -53,7 +56,11 @@ public class PictureInput: ImageSource {
                 do {
                     let imageTexture = try textureLoader.newTexture(cgImage:internalImage!, options: [MTKTextureLoader.Option.SRGB : false])
                     internalImage = nil
-                    self.internalTexture = Texture(orientation: .portrait, texture: imageTexture)
+                    self.internalTexture = Texture(
+                        orientation: .portrait,
+                        texture: imageTexture,
+                        timingStyle: isTransient ? .transientImage : .stillImage
+                    )
                     self.updateTargetsWithTexture(self.internalTexture!)
                     self.hasProcessedImage = true
                 } catch {
@@ -64,7 +71,11 @@ public class PictureInput: ImageSource {
                     guard (error == nil) else { fatalError("Error in loading texture: \(error!)") }
                     guard let texture = possibleTexture else { fatalError("Nil texture received") }
                     self.internalImage = nil
-                    self.internalTexture = Texture(orientation: .portrait, texture: texture)
+                    self.internalTexture = Texture(
+                        orientation: .portrait,
+                        texture: texture,
+                        timingStyle: self.isTransient ? .transientImage : .stillImage
+                    )
                     DispatchQueue.global().async{
                         self.updateTargetsWithTexture(self.internalTexture!)
                         self.hasProcessedImage = true
