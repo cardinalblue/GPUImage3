@@ -36,28 +36,30 @@ public class Kirakira: OperationGroup {
         public var sparkleAmount: Float
         public var frameRate: Float
         public var blur: Int
+        public var maxLength: Int
 
         public init(
             colorMode: ColorMode = .random,
-            saturation: Float = 0.3,
+            saturation: Float = 0.5,
             centerSaturation: Float = 0.3,
-            equalMinHue: Float = 0.75,
-            equalMaxHue: Float = 0.083,
+            equalMinHue: Float = 0.54,
+            equalMaxHue: Float = 0,
             equalSaturation: Float = 0.15,
-            equalBrightness: Float = 2.0,
-            speed: Float = 7.5,
-            rayCount: Int = 2,
-            rayLength: Float = 0.08,
+            equalBrightness: Float = 2.8,
+            speed: Float = 0,
+            rayCount: Int = 5,
+            rayLength: Float = 0.5,
             startAngle: Int = 45,
             sparkleExposure: Float = 0.0,
             minHue: Float = 0.0,
             maxHue: Float = 1.0,
             noiseInfluence: Float = 1.0,
-            increasingRate: Float = 0.3,
+            increasingRate: Float = 0.03,
             sparkleScale: Float = 0.7,
-            sparkleAmount: Float = 0.4,
+            sparkleAmount: Float = 0.6,
             frameRate: Float = 60,
-            blur: Int = 0
+            blur: Int = 0,
+            maxLength: Int = 1000
         ) {
             self.colorMode = colorMode
             self.saturation = saturation
@@ -79,11 +81,18 @@ public class Kirakira: OperationGroup {
             self.sparkleAmount = sparkleAmount
             self.frameRate = frameRate
             self.blur = blur
+            self.maxLength = maxLength
         }
     }
 
     // MARK: Properties
 
+    public var maxLength: Int = 1000 {
+        didSet {
+            blendImageRescaleEffect.maxLength = maxLength
+            sourceImageRescaleEffect.maxLength = maxLength
+        }
+    }
     public var colorMode: ColorMode = .random {
         didSet {
             updateSaturation()
@@ -151,6 +160,8 @@ public class Kirakira: OperationGroup {
 
     // MARK: Effects
 
+    private let blendImageRescaleEffect = CBRescaleEffect()
+    private let sourceImageRescaleEffect = CBRescaleEffect()
     private let sparklesEffect: Sparkles
     private let blurEffect = GaussianBlur()
     private let saturationEffect = SaturationAdjustment()
@@ -163,6 +174,7 @@ public class Kirakira: OperationGroup {
 
         ({
             colorMode = parameters.colorMode
+            maxLength = parameters.maxLength
             saturation = parameters.saturation
             centerSaturation = parameters.centerSaturation
             equalMinHue = parameters.equalMinHue
@@ -185,12 +197,14 @@ public class Kirakira: OperationGroup {
 
         self.configureGroup { input, output in
             input
+            --> blendImageRescaleEffect
             --> sparklesEffect
             --> blurEffect
             --> saturationEffect
             saturationEffect.addTarget(addBlend, atTargetIndex: 1)
 
             input
+            --> sourceImageRescaleEffect
             --> addBlend
             --> output
         }
@@ -239,6 +253,7 @@ extension Kirakira.Parameters: Decodable {
         case sparkleAmount
         case frameRate
         case sparkleScale
+        case maxLength
     }
 
     public init(from decoder: Decoder) throws {
@@ -263,6 +278,7 @@ extension Kirakira.Parameters: Decodable {
         sparkleAmount = try container.decodeParamValue(Float.self, forKey: .sparkleAmount)
         frameRate = try container.decodeParamValue(Float.self, forKey: .frameRate)
         sparkleScale = try container.decodeParamValue(Float.self, forKey: .sparkleScale)
+        maxLength = try container.decodeParamValue(Int.self, forKey: .maxLength)
     }
 }
 
