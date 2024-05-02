@@ -316,6 +316,7 @@
 		7B72DB2C2103CED000A91156 /* AddBlend.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7B72DB2A2103CED000A91156 /* AddBlend.metal */; };
 		93290EDC2BD902F900028F31 /* DirectionalShine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93290EDA2BD902F900028F31 /* DirectionalShine.swift */; };
 		93879E302BDA4FD100D6E5FD /* Sparkles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93879E2F2BDA4FD100D6E5FD /* Sparkles.swift */; };
+		9394938C2BE3CFD1006FF4D1 /* CBRescaleEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9394938B2BE3CFD1006FF4D1 /* CBRescaleEffect.swift */; };
 		93C331A22BD7AA9F00196F25 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C331A02BD7AA9E00196F25 /* Utils.h */; };
 		93C331A32BD7AA9F00196F25 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C331A02BD7AA9E00196F25 /* Utils.h */; };
 		93C331A42BD7AA9F00196F25 /* Utils.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C331A12BD7AA9F00196F25 /* Utils.metal */; };
@@ -607,6 +608,7 @@
 		7B72DB2A2103CED000A91156 /* AddBlend.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; name = AddBlend.metal; path = Source/Operations/AddBlend.metal; sourceTree = "<group>"; };
 		93290EDA2BD902F900028F31 /* DirectionalShine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectionalShine.swift; path = Source/DirectionalShine.swift; sourceTree = "<group>"; };
 		93879E2F2BDA4FD100D6E5FD /* Sparkles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sparkles.swift; path = Source/Sparkles.swift; sourceTree = "<group>"; };
+		9394938B2BE3CFD1006FF4D1 /* CBRescaleEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CBRescaleEffect.swift; path = Source/Operations/CBRescaleEffect.swift; sourceTree = "<group>"; };
 		93C331A02BD7AA9E00196F25 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Source/Operations/Utils.h; sourceTree = "<group>"; };
 		93C331A12BD7AA9F00196F25 /* Utils.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Utils.metal; path = Source/Operations/Utils.metal; sourceTree = "<group>"; };
 		96F24FED22007D6C0042E78D /* MedianFilter.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = MedianFilter.metal; path = Source/Operations/MedianFilter.metal; sourceTree = "<group>"; };
@@ -1002,6 +1004,7 @@
 				FBC104EE2BB6A35F00FA0885 /* CBKirakiraLightExtractor.swift */,
 				FBFD6C662BD690E70068909D /* CBPerlineNoise.metal */,
 				FBC104F32BB6A35F00FA0885 /* CBPerlineNoise.swift */,
+				9394938B2BE3CFD1006FF4D1 /* CBRescaleEffect.swift */,
 				93290EDA2BD902F900028F31 /* DirectionalShine.swift */,
 			);
 			name = CB;
@@ -1347,6 +1350,7 @@
 				FBC105022BB6A36000FA0885 /* CBPerlineNoise.swift in Sources */,
 				795ECA7421E903E2000EF927 /* ToonFilter.swift in Sources */,
 				BC25F8AF22C2B3F700CBBD15 /* HighPassFilter.swift in Sources */,
+				9394938C2BE3CFD1006FF4D1 /* CBRescaleEffect.swift in Sources */,
 				795ECAC021EF95EB000EF927 /* LocalBinaryPattern.swift in Sources */,
 				799999832226FE8F007404F2 /* KuwaharaRadius3Filter.swift in Sources */,
 				79CB6DE42108CC460042F87B /* DivideBlend.swift in Sources */,
