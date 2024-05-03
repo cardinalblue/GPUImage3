@@ -240,7 +240,7 @@ public extension Kirakira.Parameters {
 
 extension Kirakira.Parameters: Decodable {
 
-    enum CodingKeys: String, CodingKey {
+    fileprivate enum CodingKeys: String, CodingKey {
         case equalMinHue
         case equalMaxHue
         case equalSaturation
@@ -260,71 +260,45 @@ extension Kirakira.Parameters: Decodable {
         case startAngle
         case sparkleAmount
         case frameRate
-    }
-
-    enum NestedKey: String, CodingKey {
-        case value
+        case sparkleScale
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        equalMinHue = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .equalMinHue)
-            .decode(Float.self, forKey: .value)
-        equalMaxHue = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .equalMaxHue)
-            .decode(Float.self, forKey: .value)
-        equalSaturation = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .equalSaturation)
-            .decode(Float.self, forKey: .value)
-        equalBrightness = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .equalBrightness)
-            .decode(Float.self, forKey: .value)
-        speed = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .speed)
-            .decode(Float.self, forKey: .value)
-        rayCount = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .rayCount)
-            .decode(Int.self, forKey: .value)
-        rayLength = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .rayLength)
-            .decode(Float.self, forKey: .value)
-        sparkleExposure = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .sparkleExposure)
-            .decode(Float.self, forKey: .value)
-        blur = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .blur)
-            .decode(Int.self, forKey: .value)
-        colorMode = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .colorMode)
-            .decode(Kirakira.ColorMode.self, forKey: .value)
-        saturation = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .saturation)
-            .decode(Float.self, forKey: .value)
-        centerSaturation = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .centerSaturation)
-            .decode(Float.self, forKey: .value)
-        minHue = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .minHue)
-            .decode(Float.self, forKey: .value)
-        maxHue = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .maxHue)
-            .decode(Float.self, forKey: .value)
-        noiseInfluence = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .noiseInfluence)
-            .decode(Float.self, forKey: .value)
-        increasingRate = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .increasingRate)
-            .decode(Float.self, forKey: .value)
-        startAngle = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .startAngle)
-            .decode(Int.self, forKey: .value)
-        sparkleAmount = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .sparkleAmount)
-            .decode(Float.self, forKey: .value)
-        frameRate = try container
-            .nestedContainer(keyedBy: NestedKey.self, forKey: .frameRate)
-            .decode(Float.self, forKey: .value)
-        sparkleScale = 0.7
+        equalMinHue = try container.decodeParamValue(Float.self, forKey: .equalMinHue)
+        equalMaxHue = try container.decodeParamValue(Float.self, forKey: .equalMaxHue)
+        equalSaturation = try container.decodeParamValue(Float.self, forKey: .equalSaturation)
+        equalBrightness = try container.decodeParamValue(Float.self, forKey: .equalBrightness)
+        speed = try container.decodeParamValue(Float.self, forKey: .speed)
+        rayCount = try container.decode(Int.self, forKey: .rayCount)
+        rayLength = try container.decodeParamValue(Float.self, forKey: .rayLength)
+        sparkleExposure = try container.decodeParamValue(Float.self, forKey: .sparkleExposure)
+        blur = try container.decode(Int.self, forKey: .blur)
+        colorMode = try container.decode(Kirakira.ColorMode.self, forKey: .colorMode)
+        saturation = try container.decodeParamValue(Float.self, forKey: .saturation)
+        centerSaturation = try container.decodeParamValue(Float.self, forKey: .centerSaturation)
+        minHue = try container.decodeParamValue(Float.self, forKey: .minHue)
+        maxHue = try container.decodeParamValue(Float.self, forKey: .maxHue)
+        noiseInfluence = try container.decodeParamValue(Float.self, forKey: .noiseInfluence)
+        increasingRate = try container.decodeParamValue(Float.self, forKey: .increasingRate)
+        startAngle = try container.decodeParamValue(Int.self, forKey: .startAngle)
+        sparkleAmount = try container.decodeParamValue(Float.self, forKey: .sparkleAmount)
+        frameRate = try container.decodeParamValue(Float.self, forKey: .frameRate)
+        sparkleScale = try container.decodeParamValue(Float.self, forKey: .sparkleScale)
+    }
+}
+
+private extension KeyedDecodingContainer<Kirakira.Parameters.CodingKeys> {
+
+    enum ParamValueKeys: String, CodingKey {
+        case value
+    }
+
+    func decodeParamValue<T: Decodable>(
+        _ type: T.Type,
+        forKey key: Kirakira.Parameters.CodingKeys
+    ) throws -> T {
+        try nestedContainer(keyedBy: ParamValueKeys.self, forKey: key)
+            .decode(T.self, forKey: .value)
     }
 }
