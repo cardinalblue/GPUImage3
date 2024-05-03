@@ -88,10 +88,7 @@ public class Kirakira: OperationGroup {
     // MARK: Properties
 
     public var maxLength: Int = 1000 {
-        didSet {
-            blendImageRescaleEffect.maxLength = maxLength
-            sourceImageRescaleEffect.maxLength = maxLength
-        }
+        didSet { blendImageRescaleEffect.maxLength = maxLength }
     }
     public var colorMode: ColorMode = .random {
         didSet {
@@ -161,7 +158,6 @@ public class Kirakira: OperationGroup {
     // MARK: Effects
 
     private let blendImageRescaleEffect = CBRescaleEffect()
-    private let sourceImageRescaleEffect = CBRescaleEffect()
     private let sparklesEffect: Sparkles
     private let blurEffect = GaussianBlur()
     private let saturationEffect = SaturationAdjustment()
@@ -204,7 +200,6 @@ public class Kirakira: OperationGroup {
             saturationEffect.addTarget(addBlend, atTargetIndex: 1)
 
             input
-            --> sourceImageRescaleEffect
             --> addBlend
             --> output
         }
