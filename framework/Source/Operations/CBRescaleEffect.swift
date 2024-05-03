@@ -9,11 +9,11 @@ import Foundation
 import Metal
 
 public class CBRescaleEffect: BasicOperation {
-    // 0 ~ 4000
+    // 1 ~ 4000
     public var targetWidth: Int = 1000
-    // 0 ~ 4000
+    // 1 ~ 4000
     public var targetHeight: Int = 1000
-    // 0 ~ 4000
+    // 1 ~ 4000
     public var maxLength: Int = 1000
 
     public init() {
