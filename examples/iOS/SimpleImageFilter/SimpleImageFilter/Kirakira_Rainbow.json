@@ -74,5 +74,13 @@
     "frameRate" : {
         "type" : "int",
         "value" : 60
-    }
+    },
+    "maxLength" : {
+        "type" : "int",
+        "value" : 1000
+    },
+    "sparkleScale" : {
+        "type" : "float",
+        "value" : 0.7
+    },
 }
