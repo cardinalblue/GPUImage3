@@ -249,7 +249,6 @@ extension Kirakira.Parameters: Decodable {
         case frameRate
         case sparkleScale
         case maxLength
-        case sparkleScale
     }
 
     public init(from decoder: Decoder) throws {
