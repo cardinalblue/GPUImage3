@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     }
 
     private func applyKiraKira() {
-        let jsonFileName = [
+        let jsonFileNames = [
             "Kirakira_Flashlight",
             "Kirakira_Diamond",
             "Kirakira_Rainbow",
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             "Kirakira_Glamour"
         ]
         let parameters = { () -> Kirakira.Parameters in
-            let jsonFileName = jsonFileName[1] + ".json"
+            let jsonFileName = jsonFileNames[1] + ".json"
             let jsonData = try! Data(contentsOf: Bundle.main.url(forResource: jsonFileName, withExtension: nil)!)
             let parameters = try! Kirakira.Parameters(with: jsonData)
             return parameters
