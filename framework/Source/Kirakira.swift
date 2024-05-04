@@ -13,17 +13,6 @@ public class Kirakira: OperationGroup {
     public enum ColorMode: Int, Codable {
         case white = 0
         case random = 1
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            let rawValue = try container.decode(Int.self)
-            self = ColorMode(rawValue: rawValue) ?? .random
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encode(rawValue)
-        }
     }
 
     public struct Parameters {
@@ -219,17 +208,6 @@ private extension Kirakira {
 }
 
 public extension Kirakira.Parameters {
-
-    enum DecodingError: Error {
-        case jsonDataEncodingFailed
-    }
-
-    init(with jsonString: String) throws {
-        guard let data = jsonString.data(using: .utf8) else {
-            throw DecodingError.jsonDataEncodingFailed
-        }
-        try self.init(with: data)
-    }
 
     init(with jsonData: Data) throws {
         let decoder = JSONDecoder()
