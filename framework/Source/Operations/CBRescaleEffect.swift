@@ -10,11 +10,7 @@ import Metal
 
 public class CBRescaleEffect: BasicOperation {
     // 1 ~ 4000
-    public var targetWidth: Int = 1000
-    // 1 ~ 4000
-    public var targetHeight: Int = 1000
-    // 1 ~ 4000
-    public var maxLength: Int = 1000
+    public var targetDimension: Int = 1024
 
     public init() {
         super.init(fragmentFunctionName: "passthroughFragment", numberOfInputs: 1)
@@ -57,15 +53,9 @@ public class CBRescaleEffect: BasicOperation {
             width: CGFloat(texture.texture.width),
             height: CGFloat(texture.texture.height)
         )
-        let textureMaxLength = max(textureSize.width, textureSize.height)
-
-        let widthResizeRatio = maxLength > 0
-        ? CGFloat(maxLength) / textureMaxLength
-        : min(1.0, CGFloat(targetWidth) / CGFloat(textureSize.width))
-
-        let heightResizeRatio = maxLength > 0
-        ? CGFloat(maxLength) / textureMaxLength
-        : min(1.0, CGFloat(targetHeight) / CGFloat(textureSize.height))
+        let textureTargetDimension = max(textureSize.width, textureSize.height)
+        let widthResizeRatio = targetDimension > 0 ? CGFloat(targetDimension) / textureTargetDimension : 1.0
+        let heightResizeRatio = targetDimension > 0 ? CGFloat(targetDimension) / textureTargetDimension : 1.0
 
         let width = textureSize.width * widthResizeRatio
         let height = textureSize.height * heightResizeRatio

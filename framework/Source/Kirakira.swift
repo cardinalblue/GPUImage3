@@ -36,7 +36,7 @@ public class Kirakira: OperationGroup {
         public var sparkleAmount: Float
         public var frameRate: Float
         public var blur: Int
-        public var maxLength: Int
+        public var targetDimension: Int
 
         public init(
             colorMode: ColorMode = .random,
@@ -59,7 +59,7 @@ public class Kirakira: OperationGroup {
             sparkleAmount: Float = 0.6,
             frameRate: Float = 60,
             blur: Int = 0,
-            maxLength: Int = 1000
+            targetDimension: Int = 1024
         ) {
             self.colorMode = colorMode
             self.saturation = saturation
@@ -81,14 +81,14 @@ public class Kirakira: OperationGroup {
             self.sparkleAmount = sparkleAmount
             self.frameRate = frameRate
             self.blur = blur
-            self.maxLength = maxLength
+            self.targetDimension =             targetDimension
         }
     }
 
     // MARK: Properties
 
-    public var maxLength: Int = 1000 {
-        didSet { blendImageRescaleEffect.maxLength = maxLength }
+    public var targetDimension: Int = 1024 {
+        didSet { blendImageRescaleEffect.targetDimension = targetDimension }
     }
     public var colorMode: ColorMode = .random {
         didSet {
@@ -170,7 +170,7 @@ public class Kirakira: OperationGroup {
 
         ({
             colorMode = parameters.colorMode
-            maxLength = parameters.maxLength
+            targetDimension = parameters.targetDimension
             saturation = parameters.saturation
             centerSaturation = parameters.centerSaturation
             equalMinHue = parameters.equalMinHue
@@ -248,7 +248,7 @@ extension Kirakira.Parameters: Decodable {
         case sparkleAmount
         case frameRate
         case sparkleScale
-        case maxLength
+        case targetDimension
     }
 
     public init(from decoder: Decoder) throws {
@@ -273,7 +273,7 @@ extension Kirakira.Parameters: Decodable {
         sparkleAmount = try container.decodeParamValue(Float.self, forKey: .sparkleAmount)
         frameRate = try container.decodeParamValue(Float.self, forKey: .frameRate)
         sparkleScale = try container.decodeParamValue(Float.self, forKey: .sparkleScale)
-        maxLength = try container.decodeParamValue(Int.self, forKey: .maxLength)
+        targetDimension = try container.decodeParamValue(Int.self, forKey: .targetDimension)
     }
 }
 
