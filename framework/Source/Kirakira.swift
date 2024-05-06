@@ -81,7 +81,7 @@ public class Kirakira: OperationGroup {
             self.sparkleAmount = sparkleAmount
             self.frameRate = frameRate
             self.blur = blur
-            self.targetDimension =             targetDimension
+            self.targetDimension = targetDimension
         }
     }
 
