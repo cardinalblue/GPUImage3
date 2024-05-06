@@ -25,10 +25,10 @@ public class CBRescaleEffect: BasicOperation {
             return
         }
 
+        let _ = textureInputSemaphore.wait(timeout:DispatchTime.distantFuture)
         defer {
             textureInputSemaphore.signal()
         }
-        let _ = textureInputSemaphore.wait(timeout:DispatchTime.distantFuture)
         
         let outputSize = calculateTargetSize(from: texture)
         let outputTexture = Texture(
