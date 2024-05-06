@@ -75,9 +75,9 @@
         "type" : "int",
         "value" : 60
     },
-    "maxLength" : {
+    "targetDimension" :{
         "type" : "int",
-        "value" : 1000
+        "value" : 1024
     },
     "sparkleScale" : {
         "type" : "float",
