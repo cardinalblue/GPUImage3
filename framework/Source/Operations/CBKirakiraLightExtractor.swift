@@ -18,6 +18,10 @@ public class CBKirakiraLightExtractor: BasicOperation {
         didSet { uniformSettings["gapThreshold"] = gapThreshold }
     }
     // 0.0 ~ 1.0
+    public var noiseThreshold: Float = 0.8 {
+        didSet { uniformSettings["noiseThreshold"] = noiseThreshold }
+    }
+    // 0.0 ~ 1.0
     public var noiseInfluence: Float = 1.0 {
         didSet { uniformSettings["noiseInfluence"] = noiseInfluence }
     }
@@ -55,6 +59,7 @@ public class CBKirakiraLightExtractor: BasicOperation {
         ({
             luminanceThreshold = 0.8
             gapThreshold = 0.2
+            noiseThreshold = 0.8
             noiseInfluence = 1.0
             increasingRate = 0.3
             minHue = 0.0

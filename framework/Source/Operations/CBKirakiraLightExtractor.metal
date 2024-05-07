@@ -14,6 +14,7 @@ using namespace metal;
 struct LightExtractorUniform {
     float luminanceThreshold;
     float gapThreshold;
+    float noiseThreshold;
     float noiseInfluence;
     float increasingRate;
     float minHue;
@@ -81,6 +82,11 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     if (count > 4.0) outputValue = luminance;
     outputValue = count > 3.0 ? luminance : 0.0;
 
+    // Apply threshold on noise texture
+    noiseColor.r = noiseColor.r < uniform.noiseThreshold
+                    ? (pow(1.0 - (uniform.noiseThreshold - noiseColor.r) / uniform.noiseThreshold, 2.0)) * noiseColor.r
+                    : noiseColor.r;
+
     // Increase the appearance probability of the bright area
     float increaseValue = luminance > (uniform.luminanceThreshold) * 1.1 ? ((rand(uv) - (1.0 - uniform.increasingRate)) * 0.5) : 0.0;
     increaseValue = clamp(increaseValue, 0.0, 1.0);
@@ -93,7 +99,7 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     // Generate the color in HSV color space to get a high saturation color
     float minHue = uniform.minHue;
     float maxHue = uniform.maxHue < uniform.minHue ? uniform.maxHue + 1.0 : uniform.maxHue;
-    float hue = fract(fract(uv.x + uv.y) * (maxHue - minHue) + minHue);
+    float hue = fract(fract(uv.x * 3.14 + uv.y * 5.17) * (maxHue - minHue) + minHue);
     float enhanceRatio = step(hue, uniform.equalMinHue) * step(uniform.equalMaxHue, hue) > 0.0 ? 0.0 : 1.0;
     float3 hsv = float3(hue, 1.0 - enhanceRatio * uniform.equalSaturation, min(outputValue * (enhanceRatio * uniform.equalBrightness + 1.0), 1.0));
     float3 outputColor = hsv2rgb(hsv);

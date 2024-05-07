@@ -32,7 +32,6 @@ public class Kirakira: OperationGroup {
         public var maxHue: Float
         public var noiseInfluence: Float
         public var increasingRate: Float
-        public var sparkleScale: Float
         public var sparkleAmount: Float
         public var frameRate: Float
         public var blur: Int
@@ -55,8 +54,7 @@ public class Kirakira: OperationGroup {
             maxHue: Float = 1.0,
             noiseInfluence: Float = 1.0,
             increasingRate: Float = 0.03,
-            sparkleScale: Float = 0.7,
-            sparkleAmount: Float = 0.6,
+            sparkleAmount: Float = 1.0,
             frameRate: Float = 60,
             blur: Int = 0,
             targetDimension: Int = 1024
@@ -77,7 +75,6 @@ public class Kirakira: OperationGroup {
             self.maxHue = maxHue
             self.noiseInfluence = noiseInfluence
             self.increasingRate = increasingRate
-            self.sparkleScale = sparkleScale
             self.sparkleAmount = sparkleAmount
             self.frameRate = frameRate
             self.blur = blur
@@ -141,10 +138,7 @@ public class Kirakira: OperationGroup {
     public var increasingRate: Float = 0.3 {
         didSet { sparklesEffect.increasingRate = increasingRate }
     }
-    public var sparkleScale: Float = 0.7 {
-        didSet { sparklesEffect.sparkleScale = sparkleScale }
-    }
-    public var sparkleAmount: Float = 0.4 {
+    public var sparkleAmount: Float = 1.0 {
         didSet { sparklesEffect.sparkleAmount = sparkleAmount}
     }
     public var frameRate: Float = 60 {
@@ -185,7 +179,6 @@ public class Kirakira: OperationGroup {
             maxHue = parameters.maxHue
             noiseInfluence = parameters.noiseInfluence
             increasingRate = parameters.increasingRate
-            sparkleScale = parameters.sparkleScale
             sparkleAmount = parameters.sparkleAmount
             frameRate = parameters.frameRate
             blur = parameters.blur
@@ -247,7 +240,6 @@ extension Kirakira.Parameters: Decodable {
         case startAngle
         case sparkleAmount
         case frameRate
-        case sparkleScale
         case targetDimension
     }
 
@@ -272,7 +264,6 @@ extension Kirakira.Parameters: Decodable {
         startAngle = try container.decodeParamValue(Int.self, forKey: .startAngle)
         sparkleAmount = try container.decodeParamValue(Float.self, forKey: .sparkleAmount)
         frameRate = try container.decodeParamValue(Float.self, forKey: .frameRate)
-        sparkleScale = try container.decodeParamValue(Float.self, forKey: .sparkleScale)
         targetDimension = try container.decodeParamValue(Int.self, forKey: .targetDimension)
     }
 }

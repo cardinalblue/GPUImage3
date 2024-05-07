@@ -21,9 +21,6 @@ public class Sparkles: OperationGroup {
     public var speed: Float = 7.5 {
         didSet { perlinNoiseEffect.speed = speed }
     }
-    public var sparkleScale: Float = 0.7 {
-        didSet { perlinNoiseEffect.scale = sparkleScale }
-    }
     public var frameRate: Float = 60 {
         didSet { perlinNoiseEffect.frameRate = frameRate }
     }
@@ -52,7 +49,7 @@ public class Sparkles: OperationGroup {
     public var increasingRate: Float = 0.3 {
         didSet { lightExtractorEffect.increasingRate = increasingRate }
     }
-    public var sparkleAmount: Float = 0.4 {
+    public var sparkleAmount: Float = 1.0 {
         didSet { lightExtractorEffect.luminanceThreshold = 1.0 - sparkleAmount * 0.5}
     }
     // DirectionalBlurs
@@ -113,8 +110,7 @@ public class Sparkles: OperationGroup {
         ({noiseInfluence = 1.0})()
         ({increasingRate = 0.3})()
         ({startAngle = 45})()
-        ({sparkleScale = 0.7})()
-        ({sparkleAmount = 0.4})()
+        ({sparkleAmount = 1.0})()
         ({frameRate = 60})()
         ({centerSaturation = 1.3})()
 
