@@ -91,6 +91,22 @@ public class Sparkles: OperationGroup {
     private let addBlendEffects: [AddBlend]
     private var erosionEffect = CBErosion()
 
+    deinit {
+        let effects: [ImageProcessingOperation] = [
+            perlinNoiseEffect,
+            lightExtractorEffect,
+            firstBoxBlurEffect,
+            hsvValueEffect,
+            firstDilationEffect,
+            secondDilationEffect,
+            exposureEffect,
+            blurEffect,
+            saturationEffect,
+            erosionEffect
+        ] + directionalShines + addBlendEffects
+        effects.forEach { $0.resetPipeline() }
+    }
+
     public init(rayCount: Int = 2) {
         self.rayCount = rayCount
         // NOTE: Do not use Array(repeat:count:) here
