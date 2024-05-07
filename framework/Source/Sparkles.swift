@@ -24,6 +24,9 @@ public class Sparkles: OperationGroup {
     public var frameRate: Float = 60 {
         didSet { perlinNoiseEffect.frameRate = frameRate }
     }
+    public var time: Float = 0 {
+        didSet { perlinNoiseEffect.time = time }
+    }
     // LightExtractor
     public var equalMinHue: Float = 0.75 {
         didSet { lightExtractorEffect.equalMinHue = equalMinHue }
