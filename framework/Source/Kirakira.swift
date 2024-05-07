@@ -49,7 +49,7 @@ public class Kirakira: OperationGroup {
             rayCount: Int = 5,
             rayLength: Float = 0.5,
             startAngle: Int = 45,
-            sparkleExposure: Float = 0.0,
+            sparkleExposure: Float = 0.1,
             minHue: Float = 0.0,
             maxHue: Float = 1.0,
             noiseInfluence: Float = 1.0,
@@ -84,6 +84,7 @@ public class Kirakira: OperationGroup {
 
     // MARK: Properties
 
+    // 100 - 2000
     public var targetDimension: Int = 1024 {
         didSet { blendImageRescaleEffect.targetDimension = targetDimension }
     }
@@ -101,29 +102,34 @@ public class Kirakira: OperationGroup {
     public var centerSaturation: Float = 0.3 {
         didSet { updateSparkleSaturation() }
     }
-    public var equalMinHue: Float = 0.75 {
+    public var equalMinHue: Float = 0.54 {
         didSet { sparklesEffect.equalMinHue = equalMinHue }
     }
-    public var equalMaxHue: Float = 0.083 {
+    public var equalMaxHue: Float = 0 {
         didSet { sparklesEffect.equalMaxHue = equalMaxHue }
     }
     public var equalSaturation: Float = 0.15 {
         didSet { sparklesEffect.equalSaturation = equalSaturation }
     }
-    public var equalBrightness: Float = 2.0 {
+    // 0 - 5
+    public var equalBrightness: Float = 2.8 {
         didSet { sparklesEffect.equalBrightness = equalBrightness }
     }
+    // 0 - 10
     public var speed: Float = 7.5 {
         didSet { sparklesEffect.speed = speed }
     }
+    // 1 - 5
     public let rayCount: Int
     public var rayLength: Float = 0.08 {
         didSet { sparklesEffect.rayLength = rayLength }
     }
+    // 0 - 360
     public var startAngle: Int = 45 {
         didSet { sparklesEffect.startAngle = startAngle }
     }
-    public var sparkleExposure: Float = 0.0 {
+    // -1.0 - 1.0
+    public var sparkleExposure: Float = 0.1 {
         didSet { sparklesEffect.sparkleExposure = sparkleExposure }
     }
     public var minHue: Float = 0.0 {
@@ -141,6 +147,7 @@ public class Kirakira: OperationGroup {
     public var sparkleAmount: Float = 1.0 {
         didSet { sparklesEffect.sparkleAmount = sparkleAmount}
     }
+    // 1 - 120
     public var frameRate: Float = 60 {
         didSet { sparklesEffect.frameRate = frameRate }
     }
