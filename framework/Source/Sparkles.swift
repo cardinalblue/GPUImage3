@@ -46,14 +46,14 @@ public class Sparkles: OperationGroup {
     public var maxHue: Float = 1.0 {
         didSet { lightExtractorEffect.maxHue = maxHue }
     }
-    public var noiseInfluence: Float = 1.0 {
-        didSet { lightExtractorEffect.noiseInfluence = noiseInfluence }
-    }
     public var increasingRate: Float = 0.3 {
         didSet { lightExtractorEffect.increasingRate = increasingRate }
     }
     public var sparkleAmount: Float = 1.0 {
-        didSet { lightExtractorEffect.luminanceThreshold = 1.0 - sparkleAmount * 0.5}
+        didSet {
+            lightExtractorEffect.luminanceThreshold = 1.0 - sparkleAmount * 0.5
+            lightExtractorEffect.noiseThreshold = sparkleAmount == 0.0 ? 1.0 : 0.2 * (1.0 - sparkleAmount) + 0.3
+        }
     }
     // DirectionalBlurs
     public var rayLength: Float = 0.08 {
@@ -126,7 +126,6 @@ public class Sparkles: OperationGroup {
         ({sparkleExposure = 0.0})()
         ({minHue = 0.0})()
         ({maxHue = 1.0})()
-        ({noiseInfluence = 1.0})()
         ({increasingRate = 0.3})()
         ({startAngle = 45})()
         ({sparkleAmount = 1.0})()
