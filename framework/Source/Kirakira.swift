@@ -30,7 +30,6 @@ public class Kirakira: OperationGroup {
         public var sparkleExposure: Float
         public var minHue: Float
         public var maxHue: Float
-        public var noiseInfluence: Float
         public var increasingRate: Float
         public var sparkleAmount: Float
         public var frameRate: Float
@@ -52,7 +51,6 @@ public class Kirakira: OperationGroup {
             sparkleExposure: Float = 0.1,
             minHue: Float = 0.0,
             maxHue: Float = 1.0,
-            noiseInfluence: Float = 1.0,
             increasingRate: Float = 0.03,
             sparkleAmount: Float = 1.0,
             frameRate: Float = 60,
@@ -73,7 +71,6 @@ public class Kirakira: OperationGroup {
             self.sparkleExposure = sparkleExposure
             self.minHue = minHue
             self.maxHue = maxHue
-            self.noiseInfluence = noiseInfluence
             self.increasingRate = increasingRate
             self.sparkleAmount = sparkleAmount
             self.frameRate = frameRate
@@ -138,9 +135,6 @@ public class Kirakira: OperationGroup {
     public var maxHue: Float = 1.0 {
         didSet { sparklesEffect.maxHue = maxHue }
     }
-    public var noiseInfluence: Float = 1.0 {
-        didSet { sparklesEffect.noiseInfluence = noiseInfluence }
-    }
     public var increasingRate: Float = 0.3 {
         didSet { sparklesEffect.increasingRate = increasingRate }
     }
@@ -198,7 +192,6 @@ public class Kirakira: OperationGroup {
             sparkleExposure = parameters.sparkleExposure
             minHue = parameters.minHue
             maxHue = parameters.maxHue
-            noiseInfluence = parameters.noiseInfluence
             increasingRate = parameters.increasingRate
             sparkleAmount = parameters.sparkleAmount
             frameRate = parameters.frameRate
@@ -280,7 +273,6 @@ extension Kirakira.Parameters: Decodable {
         centerSaturation = try container.decodeParamValue(Float.self, forKey: .centerSaturation)
         minHue = try container.decodeParamValue(Float.self, forKey: .minHue)
         maxHue = try container.decodeParamValue(Float.self, forKey: .maxHue)
-        noiseInfluence = try container.decodeParamValue(Float.self, forKey: .noiseInfluence)
         increasingRate = try container.decodeParamValue(Float.self, forKey: .increasingRate)
         startAngle = try container.decodeParamValue(Int.self, forKey: .startAngle)
         sparkleAmount = try container.decodeParamValue(Float.self, forKey: .sparkleAmount)

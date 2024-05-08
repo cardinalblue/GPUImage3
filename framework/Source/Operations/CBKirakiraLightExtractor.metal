@@ -15,7 +15,6 @@ struct LightExtractorUniform {
     float luminanceThreshold;
     float gapThreshold;
     float noiseThreshold;
-    float noiseInfluence;
     float increasingRate;
     float minHue;
     float maxHue;
@@ -83,15 +82,12 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     outputValue = count > 3.0 ? luminance : 0.0;
 
     // Apply threshold on noise texture
-    noiseColor.r = noiseColor.r < uniform.noiseThreshold
-                    ? (pow(1.0 - (uniform.noiseThreshold - noiseColor.r) / uniform.noiseThreshold, 2.0)) * noiseColor.r
-                    : noiseColor.r;
+    noiseColor.r = noiseColor.r < uniform.noiseThreshold ? 0.0 : 1.0;
 
     // Increase the appearance probability of the bright area
     float increaseValue = luminance > (uniform.luminanceThreshold) * 1.1 ? ((rand(uv) - (1.0 - uniform.increasingRate)) * 0.5) : 0.0;
     increaseValue = clamp(increaseValue, 0.0, 1.0);
     noiseColor.r += increaseValue;
-    noiseColor.r = mix(1.0, noiseColor.r, uniform.noiseInfluence);
 
     outputValue *= noiseColor.r;
 
