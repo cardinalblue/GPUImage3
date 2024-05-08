@@ -10,6 +10,7 @@ class ViewController: UIViewController {
     private var kirakiraFilter: Kirakira!
     private var isExecuting: Bool = false
     private var queue = DispatchQueue(label: "yoyoyo")
+    private var currentParameters: Kirakira.Parameters!
 
     private var sliders = [UISlider]()
 
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
         renderView.colorPixelFormat = .bgra8Unorm
 
         // set up sliders for the kirakira effect
+        let targetDimensionSlider = makeSlider(minimumValue: 500, maximumValue: 4000, value: 1024, action: #selector(targetDimensionSliderValueChanged))
         let saturationSlider = makeSlider(minimumValue: 0.0, maximumValue: 1.0, value: 0.5, action: #selector(saturationSliderValueChanged))
         let centerSaturationSlider = makeSlider(minimumValue: 0.0, maximumValue: 1.0, value: 0.3, action: #selector(centerSaturationSliderValueChanged))
         let equalMinHueSlider = makeSlider(minimumValue: 0.0, maximumValue: 1.0, value: 0.54, action: #selector(equalMinHueSliderValueChanged))
@@ -38,6 +40,7 @@ class ViewController: UIViewController {
         let blurSlider = makeSlider(minimumValue: 0.0, maximumValue: 120.0, value: 0.0, action: #selector(blurSliderValueChanged))
 
         // set up labels for the sliders
+        let targetDimensionLabel = makeLabel(text: "Target Dimension")
         let saturationLabel = makeLabel(text: "Saturation")
         let centerSaturationLabel = makeLabel(text: "Center Saturation")
         let equalMinHueLabel = makeLabel(text: "Equal Min Hue")
@@ -57,6 +60,7 @@ class ViewController: UIViewController {
         let blurLabel = makeLabel(text: "Blur")
 
         sliders = [
+            targetDimensionSlider,
             saturationSlider,
             centerSaturationSlider,
             equalMinHueSlider,
@@ -77,6 +81,7 @@ class ViewController: UIViewController {
         ]
 
         let labels = [
+            targetDimensionLabel,
             saturationLabel,
             centerSaturationLabel,
             equalMinHueLabel,
@@ -153,11 +158,12 @@ class ViewController: UIViewController {
             "Kirakira_Glamour"
         ]
         let parameters = { () -> Kirakira.Parameters in
-            let jsonFileName = jsonFileNames[4] + ".json"
+            let jsonFileName = jsonFileNames[5] + ".json"
             let jsonData = try! Data(contentsOf: Bundle.main.url(forResource: jsonFileName, withExtension: nil)!)
             let parameters = try! Kirakira.Parameters(with: jsonData)
             return parameters
         }()
+        currentParameters = parameters
 
         let filter = Kirakira(with: parameters)
         kirakiraFilter = filter
@@ -165,13 +171,6 @@ class ViewController: UIViewController {
         picture = PictureInput(image: UIImage(named:"IMG_1492.PNG")!)
         picture --> kirakiraFilter --> renderView
 //        picture.processImage()
-    }
-
-    private func loadGoldParameter() -> Kirakira.Parameters {
-        let jsonFileName = "Kirakira_Golden.json"
-        let jsonData = try! Data(contentsOf: Bundle.main.url(forResource: jsonFileName, withExtension: nil)!)
-        let parameters = try! Kirakira.Parameters(with: jsonData)
-        return parameters
     }
 
     private func makeSlider(minimumValue: Float, maximumValue: Float, value: Float, action: Selector) -> UISlider {
@@ -207,7 +206,7 @@ extension ViewController {
     }
 
     @objc private func resetKirakiraParameters() {
-        let parameters = loadGoldParameter()
+        let parameters = currentParameters!
         kirakiraFilter.saturation = parameters.saturation
         kirakiraFilter.centerSaturation = parameters.centerSaturation
         kirakiraFilter.equalMinHue = parameters.equalMinHue
@@ -230,6 +229,7 @@ extension ViewController {
         // reset the sliders with the parameters
 
         let values = [
+            Float(parameters.targetDimension),
             parameters.saturation,
             parameters.centerSaturation,
             parameters.equalMinHue,
@@ -252,6 +252,11 @@ extension ViewController {
         zip(sliders, values).forEach { slider, value in
             slider.value = value
         }
+    }
+
+    @objc private func targetDimensionSliderValueChanged(_ sender: UISlider) {
+        kirakiraFilter.targetDimension = Int(sender.value)
+        processImage()
     }
 
     @objc private func saturationSliderValueChanged(_ sender: UISlider) {
