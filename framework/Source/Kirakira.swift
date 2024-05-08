@@ -121,7 +121,7 @@ public class Kirakira: OperationGroup {
     }
     // 1 - 5
     public let rayCount: Int
-    public var rayLength: Float = 0.08 {
+    public var rayLength: Float = 0.5 {
         didSet { sparklesEffect.rayLength = rayLength }
     }
     // 0 - 360
