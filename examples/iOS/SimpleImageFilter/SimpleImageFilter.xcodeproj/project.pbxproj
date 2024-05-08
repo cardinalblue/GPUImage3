@@ -13,6 +13,7 @@
 		934427052BDF715600BF9145 /* Kirakira_Barbie.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427002BDF715600BF9145 /* Kirakira_Barbie.json */; };
 		934427062BDF715600BF9145 /* Kirakira_Golden.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427012BDF715600BF9145 /* Kirakira_Golden.json */; };
 		934427072BDF715600BF9145 /* Kirakira_Glamour.json in Resources */ = {isa = PBXBuildFile; fileRef = 934427022BDF715600BF9145 /* Kirakira_Glamour.json */; };
+		93A87B712BEB312B009C4A92 /* IMG_1492.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 93A87B6F2BEB312B009C4A92 /* IMG_1492.PNG */; };
 		BC9E36691E525B6C00B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E36641E525B5B00B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCD985B01CA43FD5001FF01F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */; };
 		BCD985B21CA43FD5001FF01F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985B11CA43FD5001FF01F /* ViewController.swift */; };
@@ -70,6 +71,7 @@
 		934427002BDF715600BF9145 /* Kirakira_Barbie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Barbie.json; sourceTree = "<group>"; };
 		934427012BDF715600BF9145 /* Kirakira_Golden.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Golden.json; sourceTree = "<group>"; };
 		934427022BDF715600BF9145 /* Kirakira_Glamour.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kirakira_Glamour.json; sourceTree = "<group>"; };
+		93A87B6F2BEB312B009C4A92 /* IMG_1492.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_1492.PNG; sourceTree = "<group>"; };
 		BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleImageFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */,
 				934426FD2BDF6B8A00BF9145 /* KiraKiraParameters */,
 				FB10DA342AF279C6000B1AEF /* overlay-3.png */,
+				93A87B6F2BEB312B009C4A92 /* IMG_1492.PNG */,
 				FB3640E52AF0FF1900B5DA1C /* overlay-1.jpg */,
 				FB10DA312AF26388000B1AEF /* overlay-2.png */,
 				FB3640EA2AF101AE00B5DA1C /* t2.png */,
@@ -271,6 +274,7 @@
 				BCD985B51CA43FD5001FF01F /* Main.storyboard in Resources */,
 				934426FB2BDF6B3B00BF9145 /* Kirakira_Diamond.json in Resources */,
 				FB10DA332AF26388000B1AEF /* overlay-2.png in Resources */,
+				93A87B712BEB312B009C4A92 /* IMG_1492.PNG in Resources */,
 				934427072BDF715600BF9145 /* Kirakira_Glamour.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
