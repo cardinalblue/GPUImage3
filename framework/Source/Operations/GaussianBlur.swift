@@ -20,16 +20,16 @@ public class GaussianBlur: BasicOperation {
         self.useMetalPerformanceShaders = true
         
         ({blurRadiusInPixels = 2.0})()
-        
         if #available(iOS 9, macOS 10.13, *) {
-            self.metalPerformanceShaderPathway = usingMPSImageGaussianBlur
+            self.metalPerformanceShaderPathway = { [weak self] commandBuffer, inputTextures, outputTexture in
+                (self?.internalMPSImageGaussianBlur as? MPSImageGaussianBlur)?.encode(
+                    commandBuffer:commandBuffer,
+                    sourceTexture:inputTextures[0]!.texture,
+                    destinationTexture:outputTexture.texture
+                )
+            }
         } else {
             fatalError("Gaussian blur not yet implemented on pre-MPS OS versions")
         }
     }
-    
-    @available(iOS 9, macOS 10.13, *) func usingMPSImageGaussianBlur(commandBuffer:MTLCommandBuffer, inputTextures:[UInt:Texture], outputTexture:Texture) {
-        (internalMPSImageGaussianBlur as? MPSImageGaussianBlur)?.encode(commandBuffer:commandBuffer, sourceTexture:inputTextures[0]!.texture, destinationTexture:outputTexture.texture)
-    }
-    
 }
