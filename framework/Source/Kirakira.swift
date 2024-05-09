@@ -161,17 +161,6 @@ public class Kirakira: OperationGroup {
     private let saturationEffect = SaturationAdjustment()
     private let addBlend = AddBlend()
 
-    deinit {
-        let effects: [ImageProcessingOperation] = [
-            blendImageRescaleEffect,
-            sparklesEffect,
-            blurEffect,
-            saturationEffect,
-            addBlend
-        ]
-        effects.forEach { $0.resetPipeline() }
-    }
-
     public init(with parameters: Parameters) {
         self.rayCount = parameters.rayCount
         self.sparklesEffect = Sparkles(rayCount: parameters.rayCount)

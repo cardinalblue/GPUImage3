@@ -31,15 +31,6 @@ final class DirectionalShine: OperationGroup {
     private let firstDirectionalBlurEffect = CBDirectionalBlur()
     private let secondDirectionalBlurEffect = CBDirectionalBlur()
 
-    deinit {
-        let effects: [ImageProcessingOperation] = [
-            exposureEffect,
-            firstDirectionalBlurEffect,
-            secondDirectionalBlurEffect
-        ]
-        effects.forEach { $0.resetPipeline() }
-    }
-
     override init() {
         super.init()
         ({rayLength = 0.08})()
