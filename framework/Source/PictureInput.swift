@@ -97,7 +97,7 @@ public class PictureInput: ImageSource {
         let textureLoader = MTKTextureLoader(device: sharedMetalRenderingDevice.device)
         do {
             let mtlTexture = try await textureLoader.newTexture(
-                cgImage:internalImage,
+                cgImage: internalImage,
                 options: newTextureOptions
             )
             self.internalImage = nil
@@ -105,8 +105,9 @@ public class PictureInput: ImageSource {
             let texture = makeTexture(with: mtlTexture)
             internalTexture = texture
             updateTargetsWithTexture(texture)
+            hasProcessedImage = true
         } catch {
-            assertionFailure("Failed loading image texture")
+            assertionFailure("Failed loading image texture: \(error.localizedDescription)")
         }
     }
 
