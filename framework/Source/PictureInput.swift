@@ -39,6 +39,10 @@ public class PictureInput: ImageSource {
     }
     #endif
     
+    /// Process the image and send it to the target
+    ///
+    /// - Note: Should not set synchronously to true under a StructuredConcurrency environment; the newTexture(cgImage:options:) may locked a thread in this case.
+    /// For more details: https://www.notion.so/piccollage/await-newTexture-3962c12cc694452faeaa8210760898f4
     public func processImage(synchronously:Bool = false) {
         if let texture = internalTexture {
             if synchronously {
@@ -54,41 +58,77 @@ public class PictureInput: ImageSource {
             let textureLoader = MTKTextureLoader(device: sharedMetalRenderingDevice.device)
             if synchronously {
                 do {
-                    let imageTexture = try textureLoader.newTexture(cgImage:internalImage!, options: [MTKTextureLoader.Option.SRGB : false])
+                    let mtlTexture = try textureLoader.newTexture(cgImage:internalImage!, options: newTextureOptions)
                     internalImage = nil
-                    self.internalTexture = Texture(
-                        orientation: .portrait,
-                        texture: imageTexture,
-                        timingStyle: isTransient ? .transientImage : .stillImage
-                    )
-                    self.updateTargetsWithTexture(self.internalTexture!)
+                    let texture = makeTexture(with: mtlTexture)
+                    self.internalTexture = texture
+                    self.updateTargetsWithTexture(texture)
                     self.hasProcessedImage = true
                 } catch {
                     fatalError("Failed loading image texture")
                 }
             } else {
-                textureLoader.newTexture(cgImage: internalImage!, options: [MTKTextureLoader.Option.SRGB : false], completionHandler: { [weak self] (possibleTexture, error) in
+                textureLoader.newTexture(cgImage: internalImage!, options: newTextureOptions, completionHandler: { [weak self] (possibleTexture, error) in
                     guard let self else { return }
                     guard (error == nil) else { fatalError("Error in loading texture: \(error!)") }
-                    guard let texture = possibleTexture else { fatalError("Nil texture received") }
+                    guard let mtlTexture = possibleTexture else { fatalError("Nil texture received") }
                     self.internalImage = nil
-                    self.internalTexture = Texture(
-                        orientation: .portrait,
-                        texture: texture,
-                        timingStyle: self.isTransient ? .transientImage : .stillImage
-                    )
+
+                    let texture = makeTexture(with: mtlTexture)
+                    self.internalTexture = texture
                     DispatchQueue.global().async{
-                        self.updateTargetsWithTexture(self.internalTexture!)
+                        self.updateTargetsWithTexture(texture)
                         self.hasProcessedImage = true
                     }
                 })
             }
         }
     }
-    
+
+    @available(iOS 13, *)
+    public func processImage() async {
+        if let texture = internalTexture {
+            updateTargetsWithTexture(texture)
+            hasProcessedImage = true
+            return
+        }
+
+        guard let internalImage else { return }
+        let textureLoader = MTKTextureLoader(device: sharedMetalRenderingDevice.device)
+        do {
+            let mtlTexture = try await textureLoader.newTexture(
+                cgImage:internalImage,
+                options: newTextureOptions
+            )
+            self.internalImage = nil
+
+            let texture = makeTexture(with: mtlTexture)
+            internalTexture = texture
+            updateTargetsWithTexture(texture)
+        } catch {
+            assertionFailure("Failed loading image texture")
+        }
+    }
+
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         if hasProcessedImage {
             target.newTextureAvailable(self.internalTexture!, fromSourceIndex:atIndex)
         }
+    }
+}
+
+// MARK: Private functions
+extension PictureInput {
+
+    private var newTextureOptions: [MTKTextureLoader.Option : Any] {
+        [MTKTextureLoader.Option.SRGB : false]
+    }
+
+    private func makeTexture(with texture: MTLTexture) -> Texture {
+        Texture(
+            orientation: .portrait,
+            texture: texture,
+            timingStyle: isTransient ? .transientImage : .stillImage
+        )
     }
 }
