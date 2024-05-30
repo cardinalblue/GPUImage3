@@ -85,7 +85,6 @@ public class PictureInput: ImageSource {
         }
     }
 
-    @available(iOS 13, *)
     public func processImage() async {
         if let texture = internalTexture {
             updateTargetsWithTexture(texture)
