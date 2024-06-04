@@ -16,7 +16,6 @@ public class Kirakira: OperationGroup {
     }
 
     public struct Parameters {
-        public var blendRatio: Float
         public var colorMode: ColorMode
         public var saturation: Float
         public var centerSaturation: Float
@@ -38,7 +37,6 @@ public class Kirakira: OperationGroup {
         public var targetDimension: Int
 
         public init(
-            blendRatio: Float = 0.5,
             colorMode: ColorMode = .random,
             saturation: Float = 0.5,
             centerSaturation: Float = 0.3,
@@ -59,7 +57,6 @@ public class Kirakira: OperationGroup {
             blur: Int = 0,
             targetDimension: Int = 1024
         ) {
-            self.blendRatio = blendRatio
             self.colorMode = colorMode
             self.saturation = saturation
             self.centerSaturation = centerSaturation
@@ -194,7 +191,7 @@ public class Kirakira: OperationGroup {
         super.init()
 
         ({
-            blendRatio = parameters.blendRatio
+            blendRatio = 0.5
             colorMode = parameters.colorMode
             targetDimension = parameters.targetDimension
             saturation = parameters.saturation
@@ -262,7 +259,6 @@ public extension Kirakira.Parameters {
 extension Kirakira.Parameters: Decodable {
 
     fileprivate enum CodingKeys: String, CodingKey {
-        case blendRatio
         case equalMinHue
         case equalMaxHue
         case equalSaturation
@@ -286,7 +282,6 @@ extension Kirakira.Parameters: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        blendRatio = try container.decodeParamValue(Float.self, forKey: .blendRatio)
         equalMinHue = try container.decodeParamValue(Float.self, forKey: .equalMinHue)
         equalMaxHue = try container.decodeParamValue(Float.self, forKey: .equalMaxHue)
         equalSaturation = try container.decodeParamValue(Float.self, forKey: .equalSaturation)
