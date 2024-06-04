@@ -9,8 +9,13 @@
 import Foundation
 
 public class CBKirakiraLightExtractor: BasicOperation {
-    public var applyVoidMask: Bool = false {
-        didSet { uniformSettings["applyVoidMask"] = applyVoidMask ? 1.0 : 0.0 }
+
+    override var inputTextures: [UInt: Texture] {
+        didSet { applyVoidMask = inputTextures[2] != nil }
+    }
+
+    private var applyVoidMask: Bool = false {
+        didSet { uniformSettings["applyVoidMask"] = true ? 1.0 : 0.0 }
     }
     // 0.0 ~ 1.0
     public var luminanceThreshold: Float = 0.8 {
