@@ -38,7 +38,7 @@ public class Kirakira: OperationGroup {
         public var targetDimension: Int
 
         public init(
-            blendRatio: Float = 0.7,
+            blendRatio: Float = 0.5,
             colorMode: ColorMode = .random,
             saturation: Float = 0.5,
             centerSaturation: Float = 0.3,
@@ -85,7 +85,7 @@ public class Kirakira: OperationGroup {
     // MARK: Properties
     // For preprocessing
     // 0 ~ 1
-    var blendRatio: Float = 0.7 {
+    var blendRatio: Float = 0.5 {
         didSet { alphaBlend.mix = blendRatio }
     }
 
