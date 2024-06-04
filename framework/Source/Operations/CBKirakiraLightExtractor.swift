@@ -9,6 +9,9 @@
 import Foundation
 
 public class CBKirakiraLightExtractor: BasicOperation {
+    public var applyVoidMask: Bool = false {
+        didSet { uniformSettings["applyVoidMask"] = applyVoidMask ? 1.0 : 0.0 }
+    }
     // 0.0 ~ 1.0
     public var luminanceThreshold: Float = 0.8 {
         didSet { uniformSettings["luminanceThreshold"] = luminanceThreshold }
@@ -51,7 +54,7 @@ public class CBKirakiraLightExtractor: BasicOperation {
     }
 
     public init() {
-        super.init(fragmentFunctionName:"kirakiraLightExtractorFragment", numberOfInputs: 2)
+        super.init(fragmentFunctionName:"kirakiraLightExtractorFragment", numberOfInputs: 3)
         ({
             luminanceThreshold = 0.8
             gapThreshold = 0.2
@@ -63,6 +66,7 @@ public class CBKirakiraLightExtractor: BasicOperation {
             equalMaxHue = 0.083
             equalSaturation = 0.15
             equalBrightness = 2.0
+            applyVoidMask = false
         })()
     }
 }
