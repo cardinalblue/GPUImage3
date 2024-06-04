@@ -75,10 +75,9 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     if (luminance_bottomLeft + uniform.gapThreshold < luminance) count += 1.0;
     if (luminance_bottomRight + uniform.gapThreshold < luminance) count += 1.0;
 
-    // Two ways: 1. if the center is brighter than the luminanceThreshold, then the output is bright
-    //           2. lighter than 4 directions, then the output is bright
+    // The center is brighter than the threshold, then the output is bright
     float outputValue = luminance > uniform.luminanceThreshold ? 1.0 : 0.0;
-    if (count > 4.0) outputValue = luminance;
+    // If the center is not brighter than its neighbors, then the output is dark (prevent from the whole area is bright)
     outputValue = count > 3.0 ? luminance : 0.0;
 
     // Apply threshold on noise texture
