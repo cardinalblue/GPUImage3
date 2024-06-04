@@ -22,11 +22,13 @@ struct LightExtractorUniform {
     float equalMaxHue;
     float equalSaturation;
     float equalBrightness;
+    float applyVoidMask;
 };
 
 fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput [[stage_in]],
                                                texture2d<float> inputTexture [[texture(0)]],
                                                texture2d<float> noiseTexture [[texture(1)]],
+                                               texture2d<float> voidMaskTexture [[texture(2)]],
                                                constant LightExtractorUniform& uniform [[ buffer(1) ]])
 {
     constexpr sampler quadSampler;
@@ -34,6 +36,8 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     float2 uv = fragmentInput.textureCoordinate;
     float4 inputColor = inputTexture.sample(quadSampler, uv);
     float4 noiseColor = noiseTexture.sample(quadSampler, uv); // to block out some area
+    float4 voidMaskColor = voidMaskTexture.sample(quadSampler, uv);
+    float applyVoidMask;
 
     float3 luminanceFactor = float3(0.2126, 0.7152, 0.0722); // RGB to Y
 
@@ -99,6 +103,8 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     float enhanceRatio = step(hue, uniform.equalMinHue) * step(uniform.equalMaxHue, hue) > 0.0 ? 0.0 : 1.0;
     float3 hsv = float3(hue, 1.0 - enhanceRatio * uniform.equalSaturation, min(outputValue * (enhanceRatio * uniform.equalBrightness + 1.0), 1.0));
     float3 outputColor = hsv2rgb(hsv);
+
+    outputColor *= (1.0 - voidMaskColor.a * uniform.applyVoidMask);
 
     return float4(outputColor, inputColor.a);
 }
