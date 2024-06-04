@@ -6,7 +6,7 @@
 //  Copyright © 2024 Red Queen Coder, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class Sparkles: OperationGroup {
 
@@ -28,6 +28,14 @@ public class Sparkles: OperationGroup {
         didSet { perlinNoiseEffect.time = time }
     }
     // LightExtractor
+    public var faceMaskImage: UIImage? {
+        didSet {
+            guard faceMaskImage != oldValue else { return }
+            handleFaceMaskImageUpdated(from: oldValue, to: faceMaskImage)
+        }
+    }
+    private var faceMaskInput: PictureInput?
+
     public var equalMinHue: Float = 0.75 {
         didSet { lightExtractorEffect.equalMinHue = equalMinHue }
     }
@@ -196,5 +204,18 @@ extension Sparkles {
             node
             --> output
         }
+    }
+
+    private func handleFaceMaskImageUpdated(from oldValue: UIImage?, to newValue: UIImage?) {
+        faceMaskInput?.removeAllTargets()
+        faceMaskInput = {
+            guard let newValue else { return nil }
+            return PictureInput(image: newValue, isTransient: true)
+        }()
+        lightExtractorEffect.removeSourceAtIndex(2)
+
+        guard let faceMaskInput else { return }
+        faceMaskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
+        faceMaskInput.processImage()
     }
 }

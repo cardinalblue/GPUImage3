@@ -6,7 +6,7 @@
 //  Copyright © 2024 Red Queen Coder, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class Kirakira: OperationGroup {
 
@@ -102,6 +102,9 @@ public class Kirakira: OperationGroup {
     // For sparkles effect
     public var centerSaturation: Float = 0.3 {
         didSet { updateSparkleSaturation() }
+    }
+    public var faceMaskImage: UIImage? {
+        didSet { sparklesEffect.faceMaskImage = faceMaskImage }
     }
     public var equalMinHue: Float = 0.54 {
         didSet { sparklesEffect.equalMinHue = equalMinHue }
