@@ -83,7 +83,6 @@ public class Kirakira: OperationGroup {
     }
 
     // MARK: Properties
-    // For preprocessing
     // 0 ~ 1
     var blendRatio: Float = 0.5 {
         didSet { alphaBlend.mix = blendRatio }
@@ -187,7 +186,6 @@ public class Kirakira: OperationGroup {
     public init(with parameters: Parameters) {
         self.rayCount = parameters.rayCount
         self.sparklesEffect = Sparkles(rayCount: parameters.rayCount)
-        self.preprocessing = parameters.preprocessing
         super.init()
 
         ({
@@ -256,6 +254,7 @@ public extension Kirakira.Parameters {
 extension Kirakira.Parameters: Decodable {
 
     fileprivate enum CodingKeys: String, CodingKey {
+        case blendRatio
         case equalMinHue
         case equalMaxHue
         case equalSaturation
@@ -270,7 +269,6 @@ extension Kirakira.Parameters: Decodable {
         case centerSaturation
         case minHue
         case maxHue
-        case noiseInfluence
         case increasingRate
         case startAngle
         case sparkleAmount
@@ -280,6 +278,7 @@ extension Kirakira.Parameters: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        blendRatio = try container.decodeParamValue(Float.self, forKey: .blendRatio)
         equalMinHue = try container.decodeParamValue(Float.self, forKey: .equalMinHue)
         equalMaxHue = try container.decodeParamValue(Float.self, forKey: .equalMaxHue)
         equalSaturation = try container.decodeParamValue(Float.self, forKey: .equalSaturation)
