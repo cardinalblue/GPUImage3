@@ -52,7 +52,7 @@ public class Sparkles: OperationGroup {
     public var sparkleAmount: Float = 1.0 {
         didSet {
             lightExtractorEffect.luminanceThreshold = 1.0 - sparkleAmount * 0.5
-            lightExtractorEffect.noiseThreshold = sparkleAmount == 0.0 ? 1.0 : 0.2 * (1.0 - sparkleAmount) + 0.3
+            lightExtractorEffect.noiseThreshold = sparkleAmount == 0.0 ? 1.0 : 0.2 * (1.0 - sparkleAmount) + 0.32
         }
     }
     // DirectionalBlurs

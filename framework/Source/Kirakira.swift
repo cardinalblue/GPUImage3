@@ -16,6 +16,8 @@ public class Kirakira: OperationGroup {
     }
 
     public struct Parameters {
+        public var preprocessing: Bool
+        public var blendRatio: Float
         public var colorMode: ColorMode
         public var saturation: Float
         public var centerSaturation: Float
@@ -37,6 +39,8 @@ public class Kirakira: OperationGroup {
         public var targetDimension: Int
 
         public init(
+            preprocessing: Bool = true,
+            blendRatio: Float = 0.7,
             colorMode: ColorMode = .random,
             saturation: Float = 0.5,
             centerSaturation: Float = 0.3,
@@ -57,6 +61,8 @@ public class Kirakira: OperationGroup {
             blur: Int = 0,
             targetDimension: Int = 1024
         ) {
+            self.preprocessing = preprocessing
+            self.blendRatio = blendRatio
             self.colorMode = colorMode
             self.saturation = saturation
             self.centerSaturation = centerSaturation
@@ -80,6 +86,12 @@ public class Kirakira: OperationGroup {
     }
 
     // MARK: Properties
+    // For preprocessing
+    let preprocessing: Bool
+    // 0 ~ 1
+    var blendRatio: Float = 0.7 {
+        didSet { alphaBlend.mix = blendRatio }
+    }
 
     // 100 - 2000
     public var targetDimension: Int = 1024 {
@@ -156,6 +168,10 @@ public class Kirakira: OperationGroup {
     // MARK: Effects
 
     private let blendImageRescaleEffect = CBRescaleEffect()
+    private let histogramEqualization = HistogramEqualization()
+    private let alphaBlend = AlphaBlend()
+    private let brightnessEffect = BrightnessAdjustment()
+
     private let sparklesEffect: Sparkles
     private let blurEffect = GaussianBlur()
     private let saturationEffect = SaturationAdjustment()
@@ -175,9 +191,11 @@ public class Kirakira: OperationGroup {
     public init(with parameters: Parameters) {
         self.rayCount = parameters.rayCount
         self.sparklesEffect = Sparkles(rayCount: parameters.rayCount)
+        self.preprocessing = parameters.preprocessing
         super.init()
 
         ({
+            blendRatio = parameters.blendRatio
             colorMode = parameters.colorMode
             targetDimension = parameters.targetDimension
             saturation = parameters.saturation
@@ -199,9 +217,22 @@ public class Kirakira: OperationGroup {
         })()
 
         self.configureGroup { input, output in
-            input
-            --> blendImageRescaleEffect
-            --> sparklesEffect
+            if preprocessing {
+                input
+                --> blendImageRescaleEffect
+                blendImageRescaleEffect.addTarget(addBlend, atTargetIndex: 1)
+
+                input
+                --> alphaBlend
+                --> brightnessEffect
+                --> sparklesEffect
+            } else {
+                input
+                --> blendImageRescaleEffect
+                --> sparklesEffect
+            }
+
+            sparklesEffect
             --> blurEffect
             --> saturationEffect
             saturationEffect.addTarget(addBlend, atTargetIndex: 1)
