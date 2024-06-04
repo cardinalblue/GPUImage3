@@ -217,7 +217,7 @@ public class Kirakira: OperationGroup {
             --> blendImageRescaleEffect
             blendImageRescaleEffect.addTarget(addBlend, atTargetIndex: 1)
 
-            input
+            blendImageRescaleEffect
             --> alphaBlend
             --> brightnessEffect
             --> sparklesEffect
