@@ -9,40 +9,47 @@ import Metal
 import Foundation
 import MetalPerformanceShaders
 
-class HistogramEqualizationRenderer: MetalRenderer {
+final class HistogramEqualizationRenderer {
     
-    override func render(
+    func render(
         inputFrameBuffer: [MTLTexture],
         outputFrameBuffer: MTLTexture?,
         parameters: Any? = nil
     ) {
-        guard let targetTexture = outputFrameBuffer,
-              let inputTexture = inputFrameBuffer.first
-        else { return }
-        
-        guard let commandQueue,
-              let commandBuffer = commandQueue.makeCommandBuffer()
-        else { return }
-        
-        guard let device = self.metalDevice
-        else { return }
-        
+
+        let device = sharedMetalRenderingDevice.device
+        let commandQueue = sharedMetalRenderingDevice.commandQueue
+
+        guard
+            let targetTexture = outputFrameBuffer,
+            let inputTexture = inputFrameBuffer.first,
+            let commandBuffer = commandQueue.makeCommandBuffer()
+        else {
+            return
+        }
+
         var histogramInfo = MPSImageHistogramInfo(
             numberOfHistogramEntries: 256,
             histogramForAlpha: false,
             minPixelValue: vector_float4(0,0,0,0),
             maxPixelValue: vector_float4(1,1,1,1))
-             
-        let calculation = MPSImageHistogram(device: device,
-                                            histogramInfo: &histogramInfo)
+
+        let calculation = MPSImageHistogram(
+            device: device,
+            histogramInfo: &histogramInfo
+        )
         let bufferLength = calculation.histogramSize(forSourceFormat: inputTexture.pixelFormat)
-        guard let histogramInfoBuffer = device.makeBuffer(length: bufferLength, options: [.storageModePrivate])
-        else { return }
-             
-        calculation.encode(to: commandBuffer,
-                           sourceTexture: inputTexture,
-                           histogram: histogramInfoBuffer,
-                           histogramOffset: 0)
+        guard let histogramInfoBuffer = device.makeBuffer(
+            length: bufferLength,
+            options: [.storageModePrivate]
+        ) else { return }
+
+        calculation.encode(
+            to: commandBuffer,
+            sourceTexture: inputTexture,
+            histogram: histogramInfoBuffer,
+            histogramOffset: 0
+        )
         
         let equalization = MPSImageHistogramEqualization(device: device, histogramInfo: &histogramInfo)
         equalization.encodeTransform(to: commandBuffer, sourceTexture: inputTexture, histogram: histogramInfoBuffer, histogramOffset: 0)

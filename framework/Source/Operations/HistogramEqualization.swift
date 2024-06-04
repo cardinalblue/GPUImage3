@@ -9,7 +9,12 @@ import Foundation
 
 public class HistogramEqualization: BasicOperation {
 
-    private var renderer = HistogramEqualizationRenderer()
+    private var renderer: HistogramEqualizationRenderer
+
+    init(renderer: HistogramEqualizationRenderer = HistogramEqualizationRenderer()) {
+        self.renderer = renderer
+        super.init(fragmentFunctionName: "")
+    }
 
     public override func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
         guard fromSourceIndex == 0 else {
@@ -25,7 +30,7 @@ public class HistogramEqualization: BasicOperation {
             textureInputSemaphore.signal()
         }
 
-        frameTexture = texture.texture
+        let frameTexture = texture.texture
         let size = CGSize(
             width: CGFloat(frameTexture.width),
             height: CGFloat(frameTexture.height)
