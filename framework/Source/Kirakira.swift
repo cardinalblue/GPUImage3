@@ -218,7 +218,8 @@ public class Kirakira: OperationGroup {
             --> blendImageRescaleEffect
             --> preprocessSaturationEffect
             --> preprocessBlurEffect
-            preprocessBlurEffect.addTarget(addBlend, atTargetIndex: 1)
+            --> histogramEqualization
+            histogramEqualization.addTarget(alphaBlend, atTargetIndex: 1)
 
             preprocessBlurEffect
             --> alphaBlend

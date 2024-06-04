@@ -7,21 +7,25 @@
 
 import Foundation
 
-public class HistogramEqualization: BasicOperation {
+public class HistogramEqualization: ImageProcessingOperation {
+    public var maximumInputs: UInt = 1
+    public let targets = TargetContainer()
+    public let sources = SourceContainer()
 
     private var renderer: HistogramEqualizationRenderer
+    private let textureInputSemaphore = DispatchSemaphore(value:1)
+
+    var inputTextures = [UInt: Texture]()
 
     init(renderer: HistogramEqualizationRenderer = HistogramEqualizationRenderer()) {
         self.renderer = renderer
-        super.init(fragmentFunctionName: "")
     }
 
-    public override func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
+    public func transmitPreviousImage(to target: any ImageConsumer, atIndex: UInt) {}
+
+    public func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
         guard fromSourceIndex == 0 else {
             assertionFailure("sourceIndex out of range")
-            return
-        }
-        guard let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() else {
             return
         }
 
@@ -52,5 +56,13 @@ public class HistogramEqualization: BasicOperation {
 
         removeTransientInputs()
         updateTargetsWithTexture(outputTexture)
+    }
+
+    private func removeTransientInputs() {
+        for index in 0 ..< self.maximumInputs {
+            if let texture = inputTextures[index], texture.timingStyle.isTransient() {
+                inputTextures[index] = nil
+            }
+        }
     }
 }
