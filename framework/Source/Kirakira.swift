@@ -16,7 +16,6 @@ public class Kirakira: OperationGroup {
     }
 
     public struct Parameters {
-        public var preprocessing: Bool
         public var blendRatio: Float
         public var colorMode: ColorMode
         public var saturation: Float
@@ -39,7 +38,6 @@ public class Kirakira: OperationGroup {
         public var targetDimension: Int
 
         public init(
-            preprocessing: Bool = true,
             blendRatio: Float = 0.7,
             colorMode: ColorMode = .random,
             saturation: Float = 0.5,
@@ -61,7 +59,6 @@ public class Kirakira: OperationGroup {
             blur: Int = 0,
             targetDimension: Int = 1024
         ) {
-            self.preprocessing = preprocessing
             self.blendRatio = blendRatio
             self.colorMode = colorMode
             self.saturation = saturation
@@ -87,7 +84,6 @@ public class Kirakira: OperationGroup {
 
     // MARK: Properties
     // For preprocessing
-    let preprocessing: Bool
     // 0 ~ 1
     var blendRatio: Float = 0.7 {
         didSet { alphaBlend.mix = blendRatio }
@@ -217,20 +213,14 @@ public class Kirakira: OperationGroup {
         })()
 
         self.configureGroup { input, output in
-            if preprocessing {
-                input
-                --> blendImageRescaleEffect
-                blendImageRescaleEffect.addTarget(addBlend, atTargetIndex: 1)
+            input
+            --> blendImageRescaleEffect
+            blendImageRescaleEffect.addTarget(addBlend, atTargetIndex: 1)
 
-                input
-                --> alphaBlend
-                --> brightnessEffect
-                --> sparklesEffect
-            } else {
-                input
-                --> blendImageRescaleEffect
-                --> sparklesEffect
-            }
+            input
+            --> alphaBlend
+            --> brightnessEffect
+            --> sparklesEffect
 
             sparklesEffect
             --> blurEffect

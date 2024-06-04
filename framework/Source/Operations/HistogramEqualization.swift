@@ -9,22 +9,7 @@ import Foundation
 
 public class HistogramEqualization: BasicOperation {
 
-    public enum ConvenientParameterKey: String {
-        case none
-    }
-
-    public let identifier = UUID().uuidString
-
-    public static let name = "HistogramEqualization"
-
-    public static var convenientParameterDefinition: OrderedDictionary<ConvenientParameterKey, VisualEffectParameterDefinition> = [:]
-
-    private var renderer: HistogramEqualizationRenderer
-
-    public required init(convenientParameters: [ConvenientParameterKey : VisualEffectParameterValue]?) {
-        renderer = HistogramEqualizationRenderer()
-        self.convenientParameters = convenientParameters ?? [:]
-    }
+    private var renderer = HistogramEqualizationRenderer()
 
     public override func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
         guard fromSourceIndex == 0 else {
