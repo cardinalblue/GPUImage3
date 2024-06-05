@@ -12,14 +12,10 @@ public class HistogramEqualization: ImageProcessingOperation {
     public let targets = TargetContainer()
     public let sources = SourceContainer()
 
-    private var renderer: HistogramEqualizationRenderer
-    private let textureInputSemaphore = DispatchSemaphore(value:1)
+    private var renderer = HistogramEqualizationRenderer()
+    private let textureInputSemaphore = DispatchSemaphore(value: 1)
 
-    var inputTextures = [UInt: Texture]()
-
-    init(renderer: HistogramEqualizationRenderer = HistogramEqualizationRenderer()) {
-        self.renderer = renderer
-    }
+    private var inputTexture: Texture?
 
     public func transmitPreviousImage(to target: any ImageConsumer, atIndex: UInt) {}
 
@@ -47,22 +43,14 @@ public class HistogramEqualization: ImageProcessingOperation {
             height: Int(size.height),
             timingStyle: texture.timingStyle
         )
-        inputTextures[0] = texture
 
+        inputTexture = texture
         renderer.render(
             inputFrameBuffer: [frameTexture],
             outputFrameBuffer: outputTexture.texture
         )
+        inputTexture = nil
 
-        removeTransientInputs()
         updateTargetsWithTexture(outputTexture)
-    }
-
-    private func removeTransientInputs() {
-        for index in 0 ..< self.maximumInputs {
-            if let texture = inputTextures[index], texture.timingStyle.isTransient() {
-                inputTextures[index] = nil
-            }
-        }
     }
 }
