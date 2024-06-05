@@ -52,7 +52,7 @@ public class Kirakira: OperationGroup {
             minHue: Float = 0.0,
             maxHue: Float = 1.0,
             increasingRate: Float = 0.03,
-            sparkleAmount: Float = 1.0,
+            sparkleAmount: Float = 0.6,
             frameRate: Float = 60,
             blur: Int = 0,
             targetDimension: Int = 1024
@@ -117,7 +117,7 @@ public class Kirakira: OperationGroup {
         didSet { sparklesEffect.equalBrightness = equalBrightness }
     }
     // 0 - 10
-    public var speed: Float = 7.5 {
+    public var speed: Float = 0 {
         didSet { sparklesEffect.speed = speed }
     }
     // 1 - 5
@@ -142,7 +142,7 @@ public class Kirakira: OperationGroup {
     public var increasingRate: Float = 0.3 {
         didSet { sparklesEffect.increasingRate = increasingRate }
     }
-    public var sparkleAmount: Float = 1.0 {
+    public var sparkleAmount: Float = 0.6 {
         didSet { sparklesEffect.sparkleAmount = sparkleAmount}
     }
     // 1 - 120
@@ -165,7 +165,6 @@ public class Kirakira: OperationGroup {
     private let blendImageRescaleEffect = CBRescaleEffect()
     private let histogramEqualization = HistogramEqualization()
     private let alphaBlend = AlphaBlend()
-    private let brightnessEffect = BrightnessAdjustment()
     private let preprocessSaturationEffect = SaturationAdjustment()
     private let preprocessBlurEffect = GaussianBlur()
 
@@ -218,15 +217,14 @@ public class Kirakira: OperationGroup {
             --> blendImageRescaleEffect
             --> preprocessSaturationEffect
             --> preprocessBlurEffect
+
+            preprocessBlurEffect
             --> histogramEqualization
             histogramEqualization.addTarget(alphaBlend, atTargetIndex: 1)
 
             preprocessBlurEffect
             --> alphaBlend
-            --> brightnessEffect
             --> sparklesEffect
-
-            sparklesEffect
             --> blurEffect
             --> saturationEffect
             saturationEffect.addTarget(addBlend, atTargetIndex: 1)
