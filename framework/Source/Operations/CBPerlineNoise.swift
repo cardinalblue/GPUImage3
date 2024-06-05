@@ -25,7 +25,7 @@ public class CBPerlineNoise: BasicOperation {
     public init() {
         super.init(fragmentFunctionName:"perlineNoiseFragment", numberOfInputs: 1)
         ({
-            scale = 0.7
+            scale = 0.5
             updateTime()
         })()
     }
