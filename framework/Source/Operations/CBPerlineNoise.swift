@@ -10,7 +10,7 @@ import Foundation
 
 public class CBPerlineNoise: BasicOperation {
     // 0.1 ~ 10.0
-    public var scale: Float = 0.5 { didSet { uniformSettings["scale"] = scale } }
+    public var scale: Float = 0.5 { didSet { uniformSettings["scale"] = 1 / scale } }
     // 0 ~ 10.0
     public var speed: Float = 1.0 { didSet { updateTime() } }
     // 1 ~ 120
