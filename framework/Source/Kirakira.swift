@@ -154,10 +154,7 @@ public class Kirakira: OperationGroup {
     }
     // For the blur effect
     public var blur: Int = 0 {
-        didSet {
-            blurEffect.blurRadiusInPixels = Float(blur)
-            preprocessBlurEffect.blurRadiusInPixels = Float(blur)
-        }
+        didSet { blurEffect.blurRadiusInPixels = Float(blur) }
     }
 
     // MARK: Effects
@@ -211,18 +208,19 @@ public class Kirakira: OperationGroup {
             blur = parameters.blur
         })()
         preprocessSaturationEffect.saturation = 0
+        preprocessBlurEffect.blurRadiusInPixels = 5.0
 
         self.configureGroup { input, output in
             input
             --> blendImageRescaleEffect
             --> preprocessSaturationEffect
-            --> preprocessBlurEffect
 
-            preprocessBlurEffect
+            preprocessSaturationEffect
+            --> preprocessBlurEffect
             --> histogramEqualization
             histogramEqualization.addTarget(alphaBlend, atTargetIndex: 1)
 
-            preprocessBlurEffect
+            preprocessSaturationEffect
             --> alphaBlend
             --> sparklesEffect
             --> blurEffect
