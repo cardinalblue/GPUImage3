@@ -37,7 +37,6 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     float4 inputColor = inputTexture.sample(quadSampler, uv);
     float4 noiseColor = noiseTexture.sample(quadSampler, uv); // to block out some area
     float4 voidMaskColor = voidMaskTexture.sample(quadSampler, uv);
-    float applyVoidMask;
 
     float3 luminanceFactor = float3(0.2126, 0.7152, 0.0722); // RGB to Y
 
