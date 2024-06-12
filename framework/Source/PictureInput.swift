@@ -13,6 +13,8 @@ public class PictureInput: ImageSource {
 
     let isTransient: Bool
 
+    private var executingQueue = DispatchQueue(label: "com.executingQueue.PictureInput")
+
     public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait, isTransient: Bool = false) {
         internalImage = image
         self.isTransient = isTransient
@@ -82,6 +84,38 @@ public class PictureInput: ImageSource {
                     }
                 })
             }
+        }
+    }
+
+    public func processImage(then handler: @escaping () -> Void) {
+        if let texture = internalTexture {
+            executingQueue.async{
+                self.updateTargetsWithTexture(texture)
+                self.hasProcessedImage = true
+                handler()
+            }
+        } else {
+            let textureLoader = MTKTextureLoader(device: sharedMetalRenderingDevice.device)
+
+            textureLoader.newTexture(cgImage: internalImage!, options: newTextureOptions, completionHandler: { [weak self] (possibleTexture, error) in
+                guard let self else {
+                    handler()
+                    return
+                }
+                guard (error == nil) else { fatalError("Error in loading texture: \(error!)") }
+                guard let mtlTexture = possibleTexture else { fatalError("Nil texture received") }
+                self.internalImage = nil
+
+                let texture = makeTexture(with: mtlTexture)
+                self.internalTexture = texture
+                executingQueue.async{
+                    self.updateTargetsWithTexture(texture)
+                    self.hasProcessedImage = true
+                    DispatchQueue.main.async {
+                        handler()
+                    }
+                }
+            })
         }
     }
 
