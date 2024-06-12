@@ -9,7 +9,7 @@ open class OperationGroup: ImageProcessingOperation {
     public init() {
     }
     
-    public func newTextureAvailable(_ texture:Texture, fromSourceIndex:UInt) {
+    open func newTextureAvailable(_ texture:Texture, fromSourceIndex:UInt) {
         inputImageRelay.newTextureAvailable(texture, fromSourceIndex:fromSourceIndex)
     }
     
