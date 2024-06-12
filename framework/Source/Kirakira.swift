@@ -117,7 +117,7 @@ public class Kirakira: OperationGroup {
         didSet { sparklesEffect.equalBrightness = equalBrightness }
     }
     // 0 - 10
-    public var speed: Float = 0 {
+    public var speed: Float = 7.5 {
         didSet { sparklesEffect.speed = speed }
     }
     // 1 - 5
