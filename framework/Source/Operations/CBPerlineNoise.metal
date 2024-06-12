@@ -112,7 +112,7 @@ fragment float4 perlineNoiseFragment(SingleInputVertexIO fragmentInput [[ stage_
     value = 0.2 + 0.8*value;
 
     // Enhance the difference
-    value = pow(value + 0.5, 1.5) - 0.5;
+    value = (pow(value + 0.5, 1.3) - 0.5) * 1.3;
 
     return float4(float3(value), inputColor.a);
 }
