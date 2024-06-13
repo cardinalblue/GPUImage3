@@ -5,10 +5,11 @@ public class LookupFilter: BasicOperation {
         didSet { uniformSettings["intensity"] = intensity }
     }
     public var lookupImage:PictureInput? { // TODO: Check for retain cycles in all cases here
-        didSet { lookupImage?.addTarget(self, atTargetIndex:1) }
+        didSet {
+            inputTextures.removeValue(forKey: 1)
+            lookupImage?.addTarget(self, atTargetIndex:1)
+        }
     }
-
-    private let accessQueue = DispatchQueue(label: "com.LookupFilter")
 
     public init() {
         super.init(fragmentFunctionName:"lookupFragment", numberOfInputs:2)
@@ -17,16 +18,20 @@ public class LookupFilter: BasicOperation {
     }
 
     public override func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
-        let function = super.newTextureAvailable
-        accessQueue.async { [weak self] in
-            guard let self else { return }
-            guard self.inputTextures[1] == nil, let lookupImage else {
-                function(texture, fromSourceIndex)
-                return
-            }
-            lookupImage.processImage() {
-                function(texture, fromSourceIndex)
-            }
+        if fromSourceIndex == 1 {
+            inputTextures[fromSourceIndex] = texture
+            return
         }
+
+        let lock = DispatchSemaphore(value: 0)
+        if let lookupImage, inputTextures[fromSourceIndex] == nil {
+            lookupImage.processImage() {
+                super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
+                lock.signal()
+            }
+        } else {
+            super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
+        }
+        lock.wait()
     }
 }
