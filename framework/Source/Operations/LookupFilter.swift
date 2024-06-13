@@ -25,7 +25,8 @@ public class LookupFilter: BasicOperation {
 
         let lock = DispatchSemaphore(value: 0)
         if let lookupImage, inputTextures[fromSourceIndex] == nil {
-            lookupImage.processImage() {
+            Task {
+                await lookupImage.processImage()
                 super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
                 lock.signal()
             }
