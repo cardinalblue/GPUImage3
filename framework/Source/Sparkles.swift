@@ -210,7 +210,7 @@ extension Sparkles {
         faceMaskInput?.removeAllTargets()
         faceMaskInput = {
             guard let newValue else { return nil }
-            return PictureInput(image: newValue, isTransient: true)
+            return PictureInput(image: newValue)
         }()
         lightExtractorEffect.removeSourceAtIndex(2)
 
