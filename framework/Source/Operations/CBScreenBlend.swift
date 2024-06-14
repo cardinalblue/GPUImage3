@@ -21,6 +21,7 @@ public class CBScreenBlend: BasicOperation {
         didSet {
             inputTextures.removeValue(forKey: 1)
             blendImageInput?.addTarget(self, atTargetIndex: 1)
+            oldValue?.removeAllTargets()
         }
     }
 

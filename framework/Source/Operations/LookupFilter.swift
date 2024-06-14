@@ -6,6 +6,7 @@ public class LookupFilter: BasicOperation {
         didSet {
             inputTextures.removeValue(forKey: 1)
             lookupImage?.addTarget(self, atTargetIndex:1)
+            oldValue?.removeAllTargets()
         }
     }
 
