@@ -31,7 +31,7 @@ open class BasicOperation: ImageProcessingOperation {
 
     let renderPipelineState: MTLRenderPipelineState
     let operationName: String
-    open var inputTextures = [UInt:Texture]()
+    var inputTextures = [UInt:Texture]()
     let textureInputSemaphore = DispatchSemaphore(value:1)
     var useNormalizedTextureCoordinates = true
     var metalPerformanceShaderPathway: ((MTLCommandBuffer, [UInt:Texture], Texture) -> ())?
