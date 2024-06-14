@@ -18,10 +18,12 @@ public class CBScreenBlend: BasicOperation {
     public var mode: Float = 0 { didSet { uniformSettings["mode"] = mode } }
 
     public var blendImageInput: PictureInput? {
-        didSet {
+        willSet {
             inputTextures.removeValue(forKey: 1)
+            blendImageInput?.removeAllTargets()
+        }
+        didSet {
             blendImageInput?.addTarget(self, atTargetIndex: 1)
-            oldValue?.removeAllTargets()
         }
     }
 

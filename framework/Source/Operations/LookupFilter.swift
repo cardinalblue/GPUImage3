@@ -3,10 +3,12 @@ import Foundation
 public class LookupFilter: BasicOperation {
     public var intensity:Float = 1.0 { didSet { uniformSettings["intensity"] = intensity } }
     public var lookupImage:PictureInput? { // TODO: Check for retain cycles in all cases here
-        didSet {
+        willSet {
             inputTextures.removeValue(forKey: 1)
-            lookupImage?.addTarget(self, atTargetIndex:1)
-            oldValue?.removeAllTargets()
+            lookupImage?.removeAllTargets()
+        }
+        didSet {
+            lookupImage?.addTarget(self, atTargetIndex: 1)
         }
     }
 

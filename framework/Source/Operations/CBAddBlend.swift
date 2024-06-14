@@ -17,10 +17,12 @@ public class CBAddBlend: BasicOperation {
     public var intensity: Float = 1 { didSet { uniformSettings["intensity"] = intensity } }
 
     public var blendImageInput: PictureInput? {
-        didSet {
+        willSet {
             inputTextures.removeValue(forKey: 1)
+            blendImageInput?.removeAllTargets()
+        }
+        didSet {
             blendImageInput?.addTarget(self, atTargetIndex: 1)
-            oldValue?.removeAllTargets()
         }
     }
 
