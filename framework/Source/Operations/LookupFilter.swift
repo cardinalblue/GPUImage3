@@ -21,6 +21,8 @@ public class LookupFilter: BasicOperation {
             return
         }
 
+        // DispatchSemaphore is Sendable and is a kind of async-safe scoped locking
+        // Using NSLock will cause a warning in Xcode and doesn't work as expected at runtime.
         let lock = DispatchSemaphore(value: 0)
         if let lookupImage, inputTextures[fromSourceIndex] == nil {
             Task {
