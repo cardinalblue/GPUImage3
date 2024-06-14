@@ -13,8 +13,6 @@ public class PictureInput: ImageSource {
 
     let isTransient: Bool
 
-    private var executingQueue = DispatchQueue(label: "com.executingQueue.PictureInput")
-
     public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait, isTransient: Bool = false) {
         internalImage = image
         self.isTransient = isTransient
