@@ -108,11 +108,11 @@ fragment float4 perlineNoiseFragment(SingleInputVertexIO fragmentInput [[ stage_
 
     value = simplex3d_fractal(p3*8.0+8.0);
 
-    // The greater the weight(0.8), the greater the difference between light and dark.
-    value = 0.2 + 0.8*value;
+    // The greater the weight(0.9), the greater the difference between light and dark.
+    value = 0.1 + 0.9*value;
 
     // Enhance the difference
-    value = pow(value + 0.5, 1.5) - 0.5;
+    value = (pow(value + 0.5, 1.3) - 0.5) * 1.4;
 
     return float4(float3(value), inputColor.a);
 }

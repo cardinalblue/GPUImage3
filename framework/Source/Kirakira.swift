@@ -52,7 +52,7 @@ public class Kirakira: OperationGroup {
             minHue: Float = 0.0,
             maxHue: Float = 1.0,
             increasingRate: Float = 0.03,
-            sparkleAmount: Float = 1.0,
+            sparkleAmount: Float = 0.6,
             frameRate: Float = 60,
             blur: Int = 0,
             targetDimension: Int = 1024
@@ -80,6 +80,10 @@ public class Kirakira: OperationGroup {
     }
 
     // MARK: Properties
+    // 0 ~ 1
+    var blendRatio: Float = 0.5 {
+        didSet { alphaBlend.mix = blendRatio }
+    }
 
     // 100 - 2000
     public var targetDimension: Int = 1024 {
@@ -138,7 +142,7 @@ public class Kirakira: OperationGroup {
     public var increasingRate: Float = 0.3 {
         didSet { sparklesEffect.increasingRate = increasingRate }
     }
-    public var sparkleAmount: Float = 1.0 {
+    public var sparkleAmount: Float = 0.6 {
         didSet { sparklesEffect.sparkleAmount = sparkleAmount}
     }
     // 1 - 120
@@ -156,6 +160,11 @@ public class Kirakira: OperationGroup {
     // MARK: Effects
 
     private let blendImageRescaleEffect = CBRescaleEffect()
+    private let histogramEqualization = HistogramEqualization()
+    private let alphaBlend = AlphaBlend()
+    private let preprocessSaturationEffect = SaturationAdjustment()
+    private let preprocessBlurEffect = GaussianBlur()
+
     private let sparklesEffect: Sparkles
     private let blurEffect = GaussianBlur()
     private let saturationEffect = SaturationAdjustment()
@@ -178,6 +187,7 @@ public class Kirakira: OperationGroup {
         super.init()
 
         ({
+            blendRatio = 0.5
             colorMode = parameters.colorMode
             targetDimension = parameters.targetDimension
             saturation = parameters.saturation
@@ -197,10 +207,21 @@ public class Kirakira: OperationGroup {
             frameRate = parameters.frameRate
             blur = parameters.blur
         })()
+        preprocessSaturationEffect.saturation = 0
+        preprocessBlurEffect.blurRadiusInPixels = 5.0
 
         self.configureGroup { input, output in
             input
             --> blendImageRescaleEffect
+            --> preprocessSaturationEffect
+
+            preprocessSaturationEffect
+            --> preprocessBlurEffect
+            --> histogramEqualization
+            histogramEqualization.addTarget(alphaBlend, atTargetIndex: 1)
+
+            preprocessSaturationEffect
+            --> alphaBlend
             --> sparklesEffect
             --> blurEffect
             --> saturationEffect
@@ -249,7 +270,6 @@ extension Kirakira.Parameters: Decodable {
         case centerSaturation
         case minHue
         case maxHue
-        case noiseInfluence
         case increasingRate
         case startAngle
         case sparkleAmount

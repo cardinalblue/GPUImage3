@@ -10,7 +10,7 @@ import Foundation
 
 public class CBPerlineNoise: BasicOperation {
     // 0.1 ~ 10.0
-    public var scale: Float = 0.5 { didSet { uniformSettings["scale"] = scale } }
+    public var scale: Float = 0.4 { didSet { uniformSettings["scale"] = 1 / scale } }
     // 0 ~ 10.0
     public var speed: Float = 1.0 { didSet { updateTime() } }
     // 1 ~ 120
@@ -25,7 +25,7 @@ public class CBPerlineNoise: BasicOperation {
     public init() {
         super.init(fragmentFunctionName:"perlineNoiseFragment", numberOfInputs: 1)
         ({
-            scale = 0.7
+            scale = 0.4
             updateTime()
         })()
     }
