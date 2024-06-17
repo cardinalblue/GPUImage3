@@ -31,10 +31,16 @@ public class Sparkles: OperationGroup {
     public var faceMaskImage: UIImage? {
         didSet {
             guard faceMaskImage != oldValue else { return }
-            handleFaceMaskImageUpdated(from: oldValue, to: faceMaskImage)
+            faceMaskInput = faceMaskImage.map { PictureInput(image: $0) }
         }
     }
-    private var faceMaskInput: PictureInput?
+    private var faceMaskInput: PictureInput? {
+        willSet { faceMaskInput?.removeAllTargets() }
+        didSet {
+            guard let faceMaskInput else { return }
+            handleFaceMaskUpdated(faceMaskInput)
+        }
+    }
 
     public var equalMinHue: Float = 0.75 {
         didSet { lightExtractorEffect.equalMinHue = equalMinHue }
@@ -206,16 +212,13 @@ extension Sparkles {
         }
     }
 
-    private func handleFaceMaskImageUpdated(from oldValue: UIImage?, to newValue: UIImage?) {
-        faceMaskInput?.removeAllTargets()
-        faceMaskInput = {
-            guard let newValue else { return nil }
-            return PictureInput(image: newValue)
-        }()
-        lightExtractorEffect.removeSourceAtIndex(2)
-
-        guard let faceMaskInput else { return }
+    private func handleFaceMaskUpdated(_ faceMaskInput: PictureInput) {
+        let semaphore = DispatchSemaphore(value: 0)
         faceMaskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
-        faceMaskInput.processImage()
+        Task {
+            await faceMaskInput.processImage()
+            semaphore.signal()
+        }
+        semaphore.wait()
     }
 }

@@ -10,13 +10,6 @@ import Foundation
 
 public class CBKirakiraLightExtractor: BasicOperation {
 
-    override var inputTextures: [UInt: Texture] {
-        didSet { applyVoidMask = inputTextures[2] != nil }
-    }
-
-    private var applyVoidMask: Bool = false {
-        didSet { uniformSettings["applyVoidMask"] = true ? 1.0 : 0.0 }
-    }
     // 0.0 ~ 1.0
     public var luminanceThreshold: Float = 0.8 {
         didSet { uniformSettings["luminanceThreshold"] = luminanceThreshold }
@@ -71,7 +64,6 @@ public class CBKirakiraLightExtractor: BasicOperation {
             equalMaxHue = 0.083
             equalSaturation = 0.15
             equalBrightness = 2.0
-            applyVoidMask = false
         })()
     }
 }

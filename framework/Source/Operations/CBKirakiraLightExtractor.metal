@@ -22,7 +22,6 @@ struct LightExtractorUniform {
     float equalMaxHue;
     float equalSaturation;
     float equalBrightness;
-    float applyVoidMask;
 };
 
 fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput [[stage_in]],
@@ -103,7 +102,7 @@ fragment float4 kirakiraLightExtractorFragment(SingleInputVertexIO fragmentInput
     float3 hsv = float3(hue, 1.0 - enhanceRatio * uniform.equalSaturation, min(outputValue * (enhanceRatio * uniform.equalBrightness + 1.0), 1.0));
     float3 outputColor = hsv2rgb(hsv);
 
-    outputColor *= (1.0 - voidMaskColor.a * uniform.applyVoidMask);
+    outputColor *= (1.0 - voidMaskColor.a);
 
     return float4(outputColor, inputColor.a);
 }
