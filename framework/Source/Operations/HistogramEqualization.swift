@@ -35,14 +35,14 @@ public class HistogramEqualization: ImageProcessingOperation {
             width: CGFloat(frameTexture.width),
             height: CGFloat(frameTexture.height)
         )
-        let outputTexture = Texture(
+        guard let outputTexture = Texture(
             device: sharedMetalRenderingDevice.device,
             orientation: texture.orientation,
             pixelFormat: texture.texture.pixelFormat,
             width: Int(size.width),
             height: Int(size.height),
             timingStyle: texture.timingStyle
-        )
+        ) else { return }
 
         inputTexture = texture
         renderer.render(

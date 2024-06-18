@@ -76,10 +76,17 @@ open class BasicOperation: ImageProcessingOperation {
                 uniformSettings["aspectRatio"] = firstInputTexture.aspectRatio(for: outputRotation)
             }
             
-            guard let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() else {return}
+            guard 
+                let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer(),
+                let outputTexture = Texture(
+                    device:sharedMetalRenderingDevice.device,
+                    orientation: .portrait,
+                    width: outputWidth,
+                    height: outputHeight,
+                    timingStyle: firstInputTexture.timingStyle
+                )
+            else { return }
 
-            let outputTexture = Texture(device:sharedMetalRenderingDevice.device, orientation: .portrait, width: outputWidth, height: outputHeight, timingStyle: firstInputTexture.timingStyle)
-            
             guard (!activatePassthroughOnNextFrame) else { // Use this to allow a bootstrap of cyclical processing, like with a low pass filter
                 activatePassthroughOnNextFrame = false
                 // TODO: Render rotated passthrough image here
@@ -95,8 +102,15 @@ open class BasicOperation: ImageProcessingOperation {
             if let alternateRenderingFunction = metalPerformanceShaderPathway, useMetalPerformanceShaders {
                 var rotatedInputTextures: [UInt:Texture]
                 if (firstInputTexture.orientation.rotationNeeded(for:.portrait) != .noRotation) {
-                    let rotationOutputTexture = Texture(device:sharedMetalRenderingDevice.device, orientation: .portrait, width: outputWidth, height: outputHeight)
-                    guard let rotationCommandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() else {return}
+                    guard
+                        let rotationCommandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer(),
+                        let rotationOutputTexture = Texture(
+                            device:sharedMetalRenderingDevice.device,
+                            orientation: .portrait,
+                            width: outputWidth,
+                            height: outputHeight
+                        )
+                    else { return }
                     rotationCommandBuffer.renderQuad(pipelineState: sharedMetalRenderingDevice.passthroughRenderState, uniformSettings: uniformSettings, inputTextures: inputTextures, useNormalizedTextureCoordinates: useNormalizedTextureCoordinates, outputTexture: rotationOutputTexture)
                     rotationCommandBuffer.commit()
                     rotatedInputTextures = inputTextures

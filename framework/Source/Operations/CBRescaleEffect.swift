@@ -31,14 +31,14 @@ public class CBRescaleEffect: BasicOperation {
         }
         
         let outputSize = calculateTargetSize(from: texture)
-        let outputTexture = Texture(
+        guard let outputTexture = Texture(
             device: sharedMetalRenderingDevice.device,
             orientation: texture.orientation,
             pixelFormat: texture.texture.pixelFormat,
             width: Int(outputSize.width),
             height: Int(outputSize.height),
             timingStyle: texture.timingStyle
-        )
+        ) else { return }
 
         inputTextures[0] = texture
         internalRenderFunction(commandBuffer: commandBuffer, outputTexture: outputTexture)
