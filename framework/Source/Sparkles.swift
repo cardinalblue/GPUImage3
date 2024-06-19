@@ -37,7 +37,7 @@ public class Sparkles: OperationGroup {
     }
     private var faceMaskInput: PictureInput {
         willSet { faceMaskInput.removeAllTargets() }
-        didSet { handleFaceMaskUpdated(faceMaskInput) }
+        didSet { reconnectFaceMaskInput(faceMaskInput) }
     }
 
     public var equalMinHue: Float = 0.75 {
@@ -160,6 +160,7 @@ public class Sparkles: OperationGroup {
 
         setUpPipeline()
         updateDirectionalShines()
+        reconnectFaceMaskInput(faceMaskInput)
     }
 }
 
@@ -212,7 +213,7 @@ extension Sparkles {
         }
     }
 
-    private func handleFaceMaskUpdated(_ maskInput: PictureInput) {
+    private func reconnectFaceMaskInput(_ maskInput: PictureInput) {
         let semaphore = DispatchSemaphore(value: 0)
 
         maskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
@@ -227,7 +228,7 @@ extension Sparkles {
 private extension UIImage {
     static func makeEmptyMaskImage() -> UIImage {
         let size = CGSize(width: 1, height: 1)
-        let color = UIColor.black
+        let color = UIColor.clear
 
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
         defer { UIGraphicsEndImageContext() }
