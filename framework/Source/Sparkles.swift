@@ -31,15 +31,13 @@ public class Sparkles: OperationGroup {
     public var faceMaskImage: UIImage? {
         didSet {
             guard faceMaskImage != oldValue else { return }
-            faceMaskInput = faceMaskImage.map { PictureInput(image: $0) }
+            let maskImage: UIImage = faceMaskImage ?? .emptyMaskImage
+            faceMaskInput = PictureInput(image: maskImage)
         }
     }
-    private var faceMaskInput: PictureInput? {
-        willSet { faceMaskInput?.removeAllTargets() }
-        didSet {
-            guard let faceMaskInput else { return }
-            handleFaceMaskUpdated(faceMaskInput)
-        }
+    private var faceMaskInput: PictureInput {
+        willSet { faceMaskInput.removeAllTargets() }
+        didSet { handleFaceMaskUpdated(faceMaskInput) }
     }
 
     public var equalMinHue: Float = 0.75 {
@@ -129,6 +127,8 @@ public class Sparkles: OperationGroup {
             .map { _ in DirectionalShine() }
         self.addBlendEffects = Array(0...rayCount)
             .map { _ in AddBlend() }
+
+        self.faceMaskInput = PictureInput(image: .emptyMaskImage)
         super.init()
 
         ({equalMinHue = 0.75})()
@@ -212,13 +212,32 @@ extension Sparkles {
         }
     }
 
-    private func handleFaceMaskUpdated(_ faceMaskInput: PictureInput) {
+    private func handleFaceMaskUpdated(_ maskInput: PictureInput) {
         let semaphore = DispatchSemaphore(value: 0)
-        faceMaskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
+
+        maskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
         Task {
-            await faceMaskInput.processImage()
+            await maskInput.processImage()
             semaphore.signal()
         }
         semaphore.wait()
+    }
+}
+
+private extension UIImage {
+
+    static var emptyMaskImage: UIImage {
+        UIImage(color: .black, size: CGSize(width: 1, height: 1))
+    }
+
+    convenience init(color: UIColor, size: CGSize) {
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        defer { UIGraphicsEndImageContext() }
+
+        let context = UIGraphicsGetCurrentContext()!
+        context.setFillColor(color.cgColor)
+        context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+        self.init(cgImage: context.makeImage()!)
     }
 }
