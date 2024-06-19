@@ -77,7 +77,7 @@ public class PictureInput: ImageSource {
 
                 let texture = makeTexture(with: mtlTexture)
                 self.internalTexture = texture
-                DispatchQueue.global().async{
+                DispatchQueue.global(qos: .userInteractive).async{
                     self.updateTargetsWithTexture(texture)
                     self.hasProcessedImage = true
                     semaphore?.signal()
