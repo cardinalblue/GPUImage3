@@ -32,12 +32,8 @@ public class Sparkles: OperationGroup {
         didSet {
             guard faceMaskImage != oldValue else { return }
             let maskImage: UIImage = faceMaskImage ?? .makeEmptyMaskImage()
-            faceMaskInput = PictureInput(image: maskImage)
+            lightExtractorEffect.faceMaskInput = PictureInput(image: maskImage)
         }
-    }
-    private var faceMaskInput: PictureInput {
-        willSet { faceMaskInput.removeAllTargets() }
-        didSet { reconnectFaceMaskInput(faceMaskInput) }
     }
 
     public var equalMinHue: Float = 0.75 {
@@ -127,8 +123,6 @@ public class Sparkles: OperationGroup {
             .map { _ in DirectionalShine() }
         self.addBlendEffects = Array(0...rayCount)
             .map { _ in AddBlend() }
-
-        self.faceMaskInput = PictureInput(image: .makeEmptyMaskImage())
         super.init()
 
         ({equalMinHue = 0.75})()
@@ -145,6 +139,7 @@ public class Sparkles: OperationGroup {
         ({sparkleAmount = 1.0})()
         ({frameRate = 60})()
         ({centerSaturation = 1.3})()
+        ({faceMaskImage = .makeEmptyMaskImage()})()
 
         erosionEffect.steps = 6
         erosionEffect.texelSize = 3
@@ -160,7 +155,6 @@ public class Sparkles: OperationGroup {
 
         setUpPipeline()
         updateDirectionalShines()
-        reconnectFaceMaskInput(faceMaskInput)
     }
 }
 
@@ -211,17 +205,6 @@ extension Sparkles {
             node
             --> output
         }
-    }
-
-    private func reconnectFaceMaskInput(_ maskInput: PictureInput) {
-        let semaphore = DispatchSemaphore(value: 0)
-
-        maskInput.addTarget(lightExtractorEffect, atTargetIndex: 2)
-        Task {
-            await maskInput.processImage()
-            semaphore.signal()
-        }
-        semaphore.wait()
     }
 }
 
