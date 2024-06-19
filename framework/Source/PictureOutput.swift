@@ -50,9 +50,9 @@ public class PictureOutput: ImageConsumer {
             storedTexture = texture
         }
         
-        if let imageCallback = imageAvailableCallback {
-            let cgImageFromBytes = texture.cgImage()
-            
+        if let imageCallback = imageAvailableCallback,
+           let cgImageFromBytes = texture.cgImage() {
+
             // TODO: Let people specify orientations
 #if canImport(UIKit)
             let image = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
@@ -61,15 +61,15 @@ public class PictureOutput: ImageConsumer {
 #endif
 
             imageCallback(image)
-            
+
             if onlyCaptureNextFrame {
                 imageAvailableCallback = nil
             }
         }
-        
-        if let imageCallback = encodedImageAvailableCallback {
-            let cgImageFromBytes = texture.cgImage()
-            
+
+        if let imageCallback = encodedImageAvailableCallback,
+           let cgImageFromBytes = texture.cgImage() {
+
             let imageData:Data
 #if canImport(UIKit)
             let image = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)

@@ -39,7 +39,7 @@ public class Texture {
         self.timingStyle = timingStyle
     }
     
-    public init(device:MTLDevice, orientation: ImageOrientation, pixelFormat: MTLPixelFormat = .bgra8Unorm, width: Int, height: Int, mipmapped:Bool = false, timingStyle: TextureTimingStyle  = .stillImage) {
+    public init?(device:MTLDevice, orientation: ImageOrientation, pixelFormat: MTLPixelFormat = .bgra8Unorm, width: Int, height: Int, mipmapped:Bool = false, timingStyle: TextureTimingStyle  = .stillImage) {
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
                                                                          width: width,
                                                                          height: height,
@@ -47,7 +47,8 @@ public class Texture {
         textureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
         
         guard let newTexture = sharedMetalRenderingDevice.device.makeTexture(descriptor: textureDescriptor) else {
-            fatalError("Could not create texture of size: (\(width), \(height))")
+            assertionFailure("Could not create texture of size: (\(width), \(height))")
+            return nil
         }
 
         self.orientation = orientation
@@ -113,10 +114,25 @@ extension Texture {
 }
 
 extension Texture {
-    func cgImage() -> CGImage {
+    func cgImage() -> CGImage? {
         // Flip and swizzle image
-        guard let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() else { fatalError("Could not create command buffer on image rendering.")}
-        let outputTexture = Texture(device:sharedMetalRenderingDevice.device, orientation:self.orientation, width:self.texture.width, height:self.texture.height)
+        guard
+            let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer()
+        else {
+            assertionFailure("Could not create command buffer on image rendering.")
+            return nil
+        }
+        guard
+            let outputTexture = Texture(
+                device:sharedMetalRenderingDevice.device,
+                orientation: orientation,
+                width: texture.width,
+                height: texture.height
+            )
+        else {
+            assertionFailure("MTLDevice makeTexture failed")
+            return nil
+        }
         commandBuffer.renderQuad(pipelineState:sharedMetalRenderingDevice.colorSwizzleRenderState, uniformSettings:nil, inputTextures:[0:self], useNormalizedTextureCoordinates:true, outputTexture:outputTexture)
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()

@@ -6,7 +6,7 @@ public class ImageGenerator: ImageSource {
 
     public init(size:Size) {
         self.size = size
-        internalTexture = Texture(device:sharedMetalRenderingDevice.device, orientation:.portrait, width:Int(size.width), height:Int(size.height), timingStyle:.stillImage)
+        internalTexture = Texture(device:sharedMetalRenderingDevice.device, orientation:.portrait, width:Int(size.width), height:Int(size.height), timingStyle:.stillImage)!
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
