@@ -52,6 +52,6 @@ public class CBAddBlend: BasicOperation {
             super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
             lock.signal()
         }
-        lock.wait(timeout: .now() + 2)
+        _ = lock.wait(timeout: .now() + 2)
     }
 }
