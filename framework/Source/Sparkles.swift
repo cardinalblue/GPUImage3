@@ -31,7 +31,7 @@ public class Sparkles: OperationGroup {
     public var faceMaskImage: UIImage? {
         didSet {
             guard faceMaskImage != oldValue else { return }
-            let maskImage: UIImage = faceMaskImage ?? .emptyMaskImage
+            let maskImage: UIImage = faceMaskImage ?? .makeEmptyMaskImage()
             faceMaskInput = PictureInput(image: maskImage)
         }
     }
@@ -128,7 +128,7 @@ public class Sparkles: OperationGroup {
         self.addBlendEffects = Array(0...rayCount)
             .map { _ in AddBlend() }
 
-        self.faceMaskInput = PictureInput(image: .emptyMaskImage)
+        self.faceMaskInput = PictureInput(image: .makeEmptyMaskImage())
         super.init()
 
         ({equalMinHue = 0.75})()
@@ -225,12 +225,10 @@ extension Sparkles {
 }
 
 private extension UIImage {
+    static func makeEmptyMaskImage() -> UIImage {
+        let size = CGSize(width: 1, height: 1)
+        let color = UIColor.black
 
-    static var emptyMaskImage: UIImage {
-        UIImage(color: .black, size: CGSize(width: 1, height: 1))
-    }
-
-    convenience init(color: UIColor, size: CGSize) {
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
         defer { UIGraphicsEndImageContext() }
 
@@ -238,6 +236,6 @@ private extension UIImage {
         context.setFillColor(color.cgColor)
         context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
-        self.init(cgImage: context.makeImage()!)
+        return UIGraphicsGetImageFromCurrentImageContext()!
     }
 }
