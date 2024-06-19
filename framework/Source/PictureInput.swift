@@ -43,7 +43,7 @@ public class PictureInput: ImageSource {
     ///
     /// - Note: Should not set synchronously to true under a StructuredConcurrency environment; the newTexture(cgImage:options:) may locked a thread in this case.
     /// For more details: https://www.notion.so/piccollage/await-newTexture-3962c12cc694452faeaa8210760898f4
-    public func processImage(synchronously:Bool = false) {
+    public func processImage(synchronously: Bool = false) {
         if let texture = internalTexture {
             if synchronously {
                 self.updateTargetsWithTexture(texture)
@@ -56,32 +56,34 @@ public class PictureInput: ImageSource {
             }
         } else {
             let textureLoader = MTKTextureLoader(device: sharedMetalRenderingDevice.device)
-            if synchronously {
-                do {
-                    let mtlTexture = try textureLoader.newTexture(cgImage:internalImage!, options: newTextureOptions)
-                    internalImage = nil
-                    let texture = makeTexture(with: mtlTexture)
-                    self.internalTexture = texture
+            let semaphore: DispatchSemaphore? = synchronously ? DispatchSemaphore(value: 0) : nil
+            textureLoader.newTexture(cgImage: internalImage!, options: newTextureOptions, completionHandler: { [weak self] (possibleTexture, error) in
+                guard let self else {
+                    semaphore?.signal()
+                    return
+                }
+                if let error {
+                    semaphore?.signal()
+                    assertionFailure("Error in loading texture: \(error)")
+                    return
+
+                }
+                guard let mtlTexture = possibleTexture else {
+                    semaphore?.signal()
+                    assertionFailure("Nil texture received")
+                    return
+                }
+                self.internalImage = nil
+
+                let texture = makeTexture(with: mtlTexture)
+                self.internalTexture = texture
+                DispatchQueue.global(qos: .userInteractive).async{
                     self.updateTargetsWithTexture(texture)
                     self.hasProcessedImage = true
-                } catch {
-                    fatalError("Failed loading image texture")
+                    semaphore?.signal()
                 }
-            } else {
-                textureLoader.newTexture(cgImage: internalImage!, options: newTextureOptions, completionHandler: { [weak self] (possibleTexture, error) in
-                    guard let self else { return }
-                    guard (error == nil) else { fatalError("Error in loading texture: \(error!)") }
-                    guard let mtlTexture = possibleTexture else { fatalError("Nil texture received") }
-                    self.internalImage = nil
-
-                    let texture = makeTexture(with: mtlTexture)
-                    self.internalTexture = texture
-                    DispatchQueue.global().async{
-                        self.updateTargetsWithTexture(texture)
-                        self.hasProcessedImage = true
-                    }
-                })
-            }
+            })
+            semaphore?.wait()
         }
     }
 
