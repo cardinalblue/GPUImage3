@@ -42,7 +42,12 @@ public class HistogramEqualization: ImageProcessingOperation {
             width: Int(size.width),
             height: Int(size.height),
             timingStyle: texture.timingStyle
-        ) else { return }
+        ) else {
+            assertionFailure("CommandBuffer or Texture creation failed")
+            removeTransientInputs()
+            updateTargetsWithTexture(texture)
+            return
+        }
 
         inputTexture = texture
         renderer.render(
@@ -51,6 +56,7 @@ public class HistogramEqualization: ImageProcessingOperation {
         )
         inputTexture = nil
 
+        removeTransientInputs()
         updateTargetsWithTexture(outputTexture)
     }
 }

@@ -38,7 +38,12 @@ public class CBRescaleEffect: BasicOperation {
             width: Int(outputSize.width),
             height: Int(outputSize.height),
             timingStyle: texture.timingStyle
-        ) else { return }
+        ) else {
+            assertionFailure("CommandBuffer or Texture creation failed")
+            removeTransientInputs()
+            updateTargetsWithTexture(texture)
+            return
+        }
 
         inputTextures[0] = texture
         internalRenderFunction(commandBuffer: commandBuffer, outputTexture: outputTexture)

@@ -85,7 +85,12 @@ open class BasicOperation: ImageProcessingOperation {
                     height: outputHeight,
                     timingStyle: firstInputTexture.timingStyle
                 )
-            else { return }
+            else {
+                assertionFailure("CommandBuffer or Texture creation failed")
+                removeTransientInputs()
+                updateTargetsWithTexture(firstInputTexture)
+                return
+            }
 
             guard (!activatePassthroughOnNextFrame) else { // Use this to allow a bootstrap of cyclical processing, like with a low pass filter
                 activatePassthroughOnNextFrame = false
@@ -110,7 +115,13 @@ open class BasicOperation: ImageProcessingOperation {
                             width: outputWidth,
                             height: outputHeight
                         )
-                    else { return }
+                    else {
+                        assertionFailure("CommandBuffer or Texture creation failed")
+                        removeTransientInputs()
+                        textureInputSemaphore.signal()
+                        updateTargetsWithTexture(firstInputTexture)
+                        return
+                    }
                     rotationCommandBuffer.renderQuad(pipelineState: sharedMetalRenderingDevice.passthroughRenderState, uniformSettings: uniformSettings, inputTextures: inputTextures, useNormalizedTextureCoordinates: useNormalizedTextureCoordinates, outputTexture: rotationOutputTexture)
                     rotationCommandBuffer.commit()
                     rotatedInputTextures = inputTextures
