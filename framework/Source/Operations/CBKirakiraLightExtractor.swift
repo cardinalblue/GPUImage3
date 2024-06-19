@@ -9,6 +9,17 @@
 import Foundation
 
 public class CBKirakiraLightExtractor: BasicOperation {
+
+    public var faceMaskInput: PictureInput? {
+        willSet {
+            inputTextures.removeValue(forKey: 2)
+            faceMaskInput?.removeAllTargets()
+        }
+        didSet {
+            faceMaskInput?.addTarget(self, atTargetIndex: 2)
+        }
+    }
+
     // 0.0 ~ 1.0
     public var luminanceThreshold: Float = 0.8 {
         didSet { uniformSettings["luminanceThreshold"] = luminanceThreshold }
@@ -51,7 +62,7 @@ public class CBKirakiraLightExtractor: BasicOperation {
     }
 
     public init() {
-        super.init(fragmentFunctionName:"kirakiraLightExtractorFragment", numberOfInputs: 2)
+        super.init(fragmentFunctionName:"kirakiraLightExtractorFragment", numberOfInputs: 3)
         ({
             luminanceThreshold = 0.8
             gapThreshold = 0.2
@@ -64,5 +75,27 @@ public class CBKirakiraLightExtractor: BasicOperation {
             equalSaturation = 0.15
             equalBrightness = 2.0
         })()
+    }
+
+    public override func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
+        if fromSourceIndex == 2 {
+            inputTextures[fromSourceIndex] = texture
+            return
+        }
+
+        guard let faceMaskInput, inputTextures[fromSourceIndex] == nil else {
+            super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
+            return
+        }
+
+        // DispatchSemaphore is Sendable and is a kind of async-safe scoped locking
+        // Using NSLock will cause a warning in Xcode and doesn't work as expected at runtime.
+        let lock = DispatchSemaphore(value: 0)
+        Task {
+            await faceMaskInput.processImage()
+            super.newTextureAvailable(texture, fromSourceIndex: fromSourceIndex)
+            lock.signal()
+        }
+        _ = lock.wait(timeout: .now() + 2)
     }
 }

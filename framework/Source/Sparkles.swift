@@ -6,7 +6,7 @@
 //  Copyright © 2024 Red Queen Coder, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class Sparkles: OperationGroup {
 
@@ -28,6 +28,14 @@ public class Sparkles: OperationGroup {
         didSet { perlinNoiseEffect.time = time }
     }
     // LightExtractor
+    public var faceMaskImage: UIImage? {
+        didSet {
+            guard faceMaskImage != oldValue else { return }
+            let maskImage: UIImage = faceMaskImage ?? .makeEmptyMaskImage()
+            lightExtractorEffect.faceMaskInput = PictureInput(image: maskImage)
+        }
+    }
+
     public var equalMinHue: Float = 0.75 {
         didSet { lightExtractorEffect.equalMinHue = equalMinHue }
     }
@@ -131,6 +139,7 @@ public class Sparkles: OperationGroup {
         ({sparkleAmount = 1.0})()
         ({frameRate = 60})()
         ({centerSaturation = 1.3})()
+        ({faceMaskImage = .makeEmptyMaskImage()})()
 
         erosionEffect.steps = 6
         erosionEffect.texelSize = 3
@@ -196,5 +205,21 @@ extension Sparkles {
             node
             --> output
         }
+    }
+}
+
+private extension UIImage {
+    static func makeEmptyMaskImage() -> UIImage {
+        let size = CGSize(width: 1, height: 1)
+        let color = UIColor.clear
+
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        defer { UIGraphicsEndImageContext() }
+
+        let context = UIGraphicsGetCurrentContext()!
+        context.setFillColor(color.cgColor)
+        context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+        return UIGraphicsGetImageFromCurrentImageContext()!
     }
 }
