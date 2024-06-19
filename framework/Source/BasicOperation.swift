@@ -52,10 +52,6 @@ open class BasicOperation: ImageProcessingOperation {
     
     public func newTextureAvailable(_ texture: Texture, fromSourceIndex: UInt) {
         let _ = textureInputSemaphore.wait(timeout:DispatchTime.distantFuture)
-        defer {
-            textureInputSemaphore.signal()
-        }
-        
         inputTextures[fromSourceIndex] = texture
         
         if (UInt(inputTextures.count) >= maximumInputs) || activatePassthroughOnNextFrame {
@@ -88,6 +84,7 @@ open class BasicOperation: ImageProcessingOperation {
             else {
                 assertionFailure("CommandBuffer or Texture creation failed")
                 removeTransientInputs()
+                textureInputSemaphore.signal()
                 updateTargetsWithTexture(firstInputTexture)
                 return
             }
