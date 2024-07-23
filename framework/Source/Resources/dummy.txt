@@ -1,0 +1,1 @@
+Dummy file to allow resource bundle accessor

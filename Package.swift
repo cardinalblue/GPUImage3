@@ -18,7 +18,7 @@ let package = Package(
             name: "GPUImage",
             path: "framework/Source",
             exclude: ["Linux", "Operations/Shaders"],
-            resources: [ ]
+            resources: [.process("Resources")]
         ),
     ],
     swiftLanguageVersions: [.v4_2]
