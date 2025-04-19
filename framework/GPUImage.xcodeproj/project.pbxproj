@@ -416,6 +416,8 @@
 		BCFCD46720FCE91200560BC9 /* DissolveBlend.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */; };
 		BCFCD46820FCE91200560BC9 /* DissolveBlend.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */; };
 		BCFCD46920FCE91800560BC9 /* DissolveBlend.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFCD46420FCE83500560BC9 /* DissolveBlend.swift */; };
+		FB0760572C1FCCF8005D1798 /* HistogramEqualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0760552C1FCCF8005D1798 /* HistogramEqualization.swift */; };
+		FB0760582C1FCCF8005D1798 /* HistogramEqualizationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0760562C1FCCF8005D1798 /* HistogramEqualizationRenderer.swift */; };
 		FB10DA6F2AF8F688000B1AEF /* Grain.metal in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6D2AF8F688000B1AEF /* Grain.metal */; };
 		FB10DA702AF8F688000B1AEF /* Grain.metal in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6D2AF8F688000B1AEF /* Grain.metal */; };
 		FB10DA712AF8F688000B1AEF /* Grain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB10DA6E2AF8F688000B1AEF /* Grain.swift */; };
@@ -654,6 +656,8 @@
 		BCE0BE9D20D6E3C80006E120 /* ImageOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageOrientation.swift; path = Source/ImageOrientation.swift; sourceTree = "<group>"; };
 		BCFCD46420FCE83500560BC9 /* DissolveBlend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DissolveBlend.swift; path = Source/Operations/DissolveBlend.swift; sourceTree = "<group>"; };
 		BCFCD46620FCE91200560BC9 /* DissolveBlend.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; name = DissolveBlend.metal; path = Source/Operations/DissolveBlend.metal; sourceTree = "<group>"; };
+		FB0760552C1FCCF8005D1798 /* HistogramEqualization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramEqualization.swift; path = Source/Operations/HistogramEqualization.swift; sourceTree = "<group>"; };
+		FB0760562C1FCCF8005D1798 /* HistogramEqualizationRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramEqualizationRenderer.swift; path = Source/Operations/HistogramEqualizationRenderer.swift; sourceTree = "<group>"; };
 		FB10DA6D2AF8F688000B1AEF /* Grain.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Grain.metal; path = Source/Operations/Grain.metal; sourceTree = "<group>"; };
 		FB10DA6E2AF8F688000B1AEF /* Grain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Grain.swift; path = Source/Operations/Grain.swift; sourceTree = "<group>"; };
 		FBC104C42BB64C4D00FA0885 /* Kirakira.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Kirakira.swift; path = Source/Kirakira.swift; sourceTree = "<group>"; };
@@ -1006,6 +1010,8 @@
 				FBC104F32BB6A35F00FA0885 /* CBPerlineNoise.swift */,
 				9394938B2BE3CFD1006FF4D1 /* CBRescaleEffect.swift */,
 				93290EDA2BD902F900028F31 /* DirectionalShine.swift */,
+				FB0760552C1FCCF8005D1798 /* HistogramEqualization.swift */,
+				FB0760562C1FCCF8005D1798 /* HistogramEqualizationRenderer.swift */,
 			);
 			name = CB;
 			sourceTree = "<group>";
@@ -1276,6 +1282,7 @@
 				4C280F79213426EC001A985C /* Posterize.metal in Sources */,
 				793D932F20F68A21008A7A6E /* ExposureAdjustment.swift in Sources */,
 				79E30E6C20F118CD005FA13C /* Texture.swift in Sources */,
+				FB0760572C1FCCF8005D1798 /* HistogramEqualization.swift in Sources */,
 				793D934120F693AD008A7A6E /* GammaAdjustment.swift in Sources */,
 				BCCFEA6222AEEDDB00C9F4CC /* Camera.swift in Sources */,
 				79A81CA62101266600A3B43A /* HighlightAndShadowTint.swift in Sources */,
@@ -1345,6 +1352,7 @@
 				79A81C8E2100F0E300A3B43A /* OpacityAdjustment.swift in Sources */,
 				BCF119A72211FAA000C4A579 /* BulgeDistortion.metal in Sources */,
 				793D934720F69A7F008A7A6E /* HueAdjustment.swift in Sources */,
+				FB0760582C1FCCF8005D1798 /* HistogramEqualizationRenderer.swift in Sources */,
 				793D933B20F6908A008A7A6E /* SaturationAdjustment.swift in Sources */,
 				79A81C912100F0EE00A3B43A /* OpacityAdjustment.metal in Sources */,
 				FBC105022BB6A36000FA0885 /* CBPerlineNoise.swift in Sources */,
@@ -1623,7 +1631,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1681,7 +1689,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
